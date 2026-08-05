@@ -12,7 +12,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
 db.connect((err) => {
     if (err) {
         console.error(err);
@@ -23,7 +22,7 @@ db.connect((err) => {
 });
 
 
-app.use('/',authRoutes)
+app.use('/auth',authRoutes)
 
 
 
