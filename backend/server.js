@@ -12,22 +12,21 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-db.connect((err) => {
-    if (err) {
+
+app.use('/auth', authRoutes);
+
+
+
+async function startServer() {
+    try {
+        await db.getConnection();
+        console.log("Connected to MySQL!");
+        app.listen(process.env.PORT, () => {
+            console.log(`Server running on port ${process.env.PORT}`);
+        });
+
+    } catch (err) {
         console.error(err);
-        return;
     }
-
-    console.log("Connected to MySQL!");
-});
-
-
-app.use('/auth',authRoutes)
-
-
-
-
-
-app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
-});
+}
+startServer();

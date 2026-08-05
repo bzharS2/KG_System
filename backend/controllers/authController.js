@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 
 const db = require("../db");
+const e = require("express");
 //check class exist as well
 
 const createStudentController = (req, res) => {
@@ -45,4 +46,72 @@ const createStudentController = (req, res) => {
     })
 }
 
-module.exports = { createStudentController };
+const createStaffController = async (req, res) => {
+    const role = "staff";
+    const { username, email, password, dateOfBirth } = req.body;
+    const result = await createUser(
+        username,
+        email,
+        password,
+        dateOfBirth,
+        role
+    );
+    if (!result.check) {
+        return res.status(400).json({
+            message: result.text
+        });
+    }
+    return res.status(201).json({
+        message: result.text
+    });
+};
+async function createUser(username, email, password, dateOfBirth, role) {
+    if (username.trim() == "" ||
+        email.trim() == "" ||
+        password.trim() == "" ||
+        dateOfBirth.trim() == ""
+    ) {
+        return {
+            check: false,
+            text: "Invalid inputs"
+        };
+    }
+    try {
+        const [result] = await db.query('SELECT * FROM users WHERE email=?', [email.trim()])
+        if (result.length > 0) {
+            return {
+                check: false,
+                text: "Email already exists"
+            };
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await db.query(
+            "INSERT INTO users (username, email, password, role, date_of_birth) VALUES (?, ?, ?, ?, ?)",
+            [
+                username.trim(),
+                email.trim().toLowerCase(),
+                hashedPassword,
+                role,
+                dateOfBirth
+            ]
+        );
+        return {
+            check: true,
+            text: "User created successfully"
+        };
+
+
+    } catch (error) {
+        return {
+            check: false,
+            text: "internal sever error"
+        };
+
+
+    }
+
+
+
+}
+
+module.exports = { createStudentController, createStaffController };
