@@ -6,7 +6,7 @@ const cors = require("cors");
 const db = require("./db");
 
 const authRoutes = require("./routes/authRoutes");
-const profileRoutes = require("./routes/profileRoutes");
+//const profileRoutes = require("./routes/profileRoutes");
 
 const app = express();
 
@@ -21,6 +21,12 @@ db.connect((err) => {
 
     console.log("Connected to MySQL!");
 });
+
+
+app.use('/',authRoutes)
+
+
+
 
 
 app.listen(process.env.PORT, () => {
