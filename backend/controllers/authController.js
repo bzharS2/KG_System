@@ -1,10 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
-
 const db = require("../db");
-const e = require("express");
+const express = require("express");
+
 //check class exist as well
 
 const createStudentController = async (req, res) => {
