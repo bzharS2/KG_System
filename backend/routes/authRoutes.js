@@ -4,15 +4,15 @@ const {
     createStudentController,
     createStaffController,
     createTeacherController,
-   // loginController,
-   // adminLoginController
+    loginController
 } = require("../controllers/authController");
 
 //const authMiddleware = require("../middleware/authMiddleware");
 
 
-router.post('/admin/students',createStudentController);
-router.post('/admin/staff',createStaffController);
-router.post('/admin/teacher',createTeacherController)
+router.post('/admin/students', createStudentController);
+router.post('/admin/staff', createStaffController);
+router.post('/admin/teacher', createTeacherController);
+router.post('/login', loginController)
 
 module.exports = router;
