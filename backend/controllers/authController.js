@@ -49,7 +49,27 @@ const createStaffController = async (req, res) => {
         });
     }
     return res.status(201).json({
-        message: result.text
+        message: result.text+' users role is: '+role
+    });
+};
+
+const createTeacherController = async (req, res) => {
+    const role = "teacher";
+    const { username, email, password, dateOfBirth } = req.body;
+    const result = await createUser(
+        username,
+        email,
+        password,
+        dateOfBirth,
+        role
+    );
+    if (!result.check) {
+        return res.status(400).json({
+            message: result.text
+        });
+    }
+    return res.status(201).json({
+        message: result.text +' user role is: '+role
     });
 };
 async function createUser(username, email, password, dateOfBirth, role) {
@@ -101,4 +121,4 @@ async function createUser(username, email, password, dateOfBirth, role) {
 
 }
 
-module.exports = { createStudentController, createStaffController };
+module.exports = { createStudentController, createStaffController,createTeacherController };

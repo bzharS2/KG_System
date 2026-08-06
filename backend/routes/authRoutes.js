@@ -3,6 +3,7 @@ const router = express.Router();
 const {
     createStudentController,
     createStaffController,
+    createTeacherController,
    // loginController,
    // adminLoginController
 } = require("../controllers/authController");
@@ -11,6 +12,7 @@ const {
 
 
 router.post('/admin/students',createStudentController);
-router.post('/admin/staff',createStaffController)
+router.post('/admin/staff',createStaffController);
+router.post('/admin/teacher',createTeacherController)
 
 module.exports = router;
