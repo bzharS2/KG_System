@@ -49,12 +49,12 @@ const updateUserController = async (req, res) => {
         return res.status(400).json({ error: `invalid inputs` })
     }
     try {//check for a user with the same new email except for the current user
-        const [isEmail] = await db.query('SELECT * FROM users WHERE email=? AND id!=?', [email.trim().toLowerCase(),id]);
+        const [isEmail] = await db.query('SELECT * FROM users WHERE email=? AND id!=?', [email.trim().toLowerCase(), id]);
         if (isEmail.length != 0) {
             return res.status(400).json({ error: `email already exists` });
         }
-        const [result] = await db.query('UPDATE  users SET username=?,email=?,role=?,date_of_birth=?, status=? WHERE id=?',[username.trim(), email.trim().toLowerCase(), role.trim().toLowerCase(), date_of_birth.trim(), status.trim().toLowerCase(), id]);
-        if (result.affectedRows==0) {
+        const [result] = await db.query('UPDATE  users SET username=?,email=?,role=?,date_of_birth=?, status=? WHERE id=?', [username.trim(), email.trim().toLowerCase(), role.trim().toLowerCase(), date_of_birth.trim(), status.trim().toLowerCase(), id]);
+        if (result.affectedRows == 0) {
             return res.status(404).json({ error: "user not found" });
         }
         return res.status(200).json(result);
@@ -63,4 +63,68 @@ const updateUserController = async (req, res) => {
 
     }
 }
-module.exports = { getStatisticController, getUsersController, getUserController };
+
+const updateStatusController = async (req, res) => {
+    const id = req.params.id;
+    const status = req.body.status;
+    if (status.trim() == "") {
+        return res.status(400).json({ error: `invalid input` })
+    }
+
+    try {
+        const [result] = await db.query('UPDATE users SET status = ? WHERE id= ?', [status.trim().toLowerCase(), id]);
+        if (result.affectedRows == 0) {
+            return res.status(400).json({ error: `user doesn't exist` })
+        }
+        return res.status(200).json({
+            message: `student updated successfully`,
+        })
+    } catch (error) {
+        return res.status(500).json({ error: `internal server error` })
+    }
+}
+const getClassesController = async (req, res) => {
+    try {
+        const [result] = await db.query('SELECT name FROM classes');
+        if (result.length == 0) {
+            return res.status(404).json({ error: `no classes found` })
+        }
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json({ error: `internal server error` })
+    }
+}
+const createClassesController = async (req, res) => {
+    const className = req.body.name;
+    if (className.trim() == "") {
+        return res.status(400).json({ error: `invalid inputs` })
+    }
+    try {
+        const [result] = await db.query('INSERT INTO classes (name) VALUES(?)', [className.trim().toUpperCase()])
+        if (result.affectedRows == 0) {
+            return res.status(400).json({ error: `invalid something` })
+        }
+        return res.status(200).json({ message: `class created successfully` })
+
+    } catch (error) {
+        return res.status(500).json({ error: error })
+    }
+}
+
+const updateClassesController = async (req, res) => {
+    const id = req.params.id;
+    const className = req.body.name;
+    if (className.trim() == "") {
+        return res.status(400).json({ error: `invalid inputs` })
+    }
+    try {
+        const [result] = await db.query('UPDATE classes SET name=? WHERE id=?', [className.trim().toUpperCase(), id])
+        if (result.affectedRows == 0) {
+            return res.status(400).json({ error: `invalid id` })
+        }
+        return res.status(200).json({ message: `class updated successfully` })
+    } catch (error) {
+        return res.status(500).json({ error: error })
+    }
+}
+module.exports = { createClassesController, getClassesController, getStatisticController, getUsersController, getUserController, updateUserController, updateStatusController,updateClassesController };

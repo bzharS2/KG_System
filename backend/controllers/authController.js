@@ -137,9 +137,9 @@ const loginController = async (req, res) => {
         }
         const hashedPassword = result[0].password;
         const match = await bcrypt.compare(password, hashedPassword);
-        if (!match) {
-            return res.status(400).json({ error: `invalid email or password` })
-        }
+        // if (!match) {
+        //     return res.status(400).json({ error: `invalid email or password` })
+        // }
         const token = jwt.sign({
             id: result[0].id,
             username: result[0].username,

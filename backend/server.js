@@ -7,14 +7,15 @@ const db = require("./db");
 
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-
+const studentRoutes = require('./routes/studentRoutes');
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
 app.use('/auth', authRoutes);
-app.use('/admin',adminRoutes)
+app.use('/admin',adminRoutes);
+app.use('/student',studentRoutes);
 
 
 
