@@ -6,7 +6,7 @@ const cors = require("cors");
 const db = require("./db");
 
 const authRoutes = require("./routes/authRoutes");
-const profileRoutes = require("./routes/profileRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/auth', authRoutes);
-app.use('/profile',profileRoutes)
+app.use('/admin',adminRoutes)
 
 
 
