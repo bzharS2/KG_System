@@ -8,6 +8,7 @@ const db = require("./db");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const studentRoutes = require('./routes/studentRoutes');
+const teacherRoutes= require('./routes/teacherRoutes');
 const app = express();
 
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(cors());
 app.use('/auth', authRoutes);
 app.use('/admin',adminRoutes);
 app.use('/student',studentRoutes);
+app.use('/teacher',teacherRoutes)
 
 
 
