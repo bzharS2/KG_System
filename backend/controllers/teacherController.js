@@ -37,6 +37,7 @@ const getStudentController = async (req, res) => {
     try {
         const [result] = await db.query(
             `SELECT DISTINCT
+        student.id
         student.username,
         student.email,
         student.date_of_birth,
@@ -179,6 +180,100 @@ const createStudentEvaluation = async (req, res) => {
             error: "internal server error"
         });
     }
+}
+const getTeacherEvaluationsController = async (req, res) => {
+    try {
+        const [result] = await db.query(
+            `SELECT
+                evaluation.id,
+                student.id AS student_id,
+                student.username AS student,
+                subject.name AS subject,
+                evaluation.grade,
+                evaluation.opinion
+             FROM evaluations AS evaluation
+             JOIN users AS student
+                 ON student.id = evaluation.student_id
+             JOIN teaching_assignments AS assignment
+                 ON assignment.id = evaluation.teaching_assignment_id
+             JOIN subjects AS subject
+                 ON subject.id = assignment.subject_id
+             WHERE assignment.teacher_id = ?`,
+            [req.user.id]
+        );
+
+        if (result.length === 0) {
+            return res.status(404).json({
+                error: "no evaluations found"
+            });
+        }
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
 };
 
-module.exports = { getTeacherDashboardController, getStudentController, createStudentEvaluation };
+const updateStudentEvaluations = async (req, res) => {
+    const evaluation_id = req.params.id;
+    const { grade, opinion } = req.body;
+    if (
+        typeof grade !== "number" ||
+        grade < 0 ||
+        grade > 100
+    ) {
+        return res.status(400).json({
+            error: "invalid grade value"
+        });
+    } else if (opinion.trim() === "" || !opinion) {
+        return res.status(400).json({
+            error: "invalid opinion value"
+        });
+    }
+    
+        try {
+            const [evaluation] = await db.query(
+                `SELECT evaluation.id
+             FROM evaluations AS evaluation
+             JOIN teaching_assignments AS assignment
+                 ON assignment.id = evaluation.teaching_assignment_id
+             WHERE evaluation.id = ?
+               AND assignment.teacher_id = ?`,
+                [evaluation_id, req.user.id]
+            );
+
+            if (evaluation.length === 0) {
+                return res.status(404).json({
+                    error: "evaluation not found or you are not authorized to update it"
+                });
+            }
+
+            const [result] = await db.query(
+                `UPDATE evaluations
+             SET grade = ?, opinion = ?
+             WHERE id = ?`,
+                [grade, opinion.trim(), evaluation_id]
+            );
+
+            if (result.affectedRows === 0) {
+                return res.status(400).json({
+                    error: "evaluation was not updated"
+                });
+            }
+
+            return res.status(200).json({
+                message: "evaluation updated successfully"
+            });
+        } catch (error) {
+            return res.status(500).json({
+                error: "internal server error"
+            });
+        }
+    }
+
+module.exports = { getTeacherDashboardController, getStudentController, createStudentEvaluation, getTeacherEvaluationsController,updateStudentEvaluations };
