@@ -10,9 +10,9 @@ const {
 //const authMiddleware = require("../middleware/authMiddleware");
 
 
-router.post('/admin/students', createStudentController);
-router.post('/admin/staff', createStaffController);
-router.post('/admin/teacher', createTeacherController);
+router.post('/students', createStudentController);
+router.post('/staff', createStaffController);
+router.post('/teacher', createTeacherController);
 router.post('/login', loginController)
 
 module.exports = router;
