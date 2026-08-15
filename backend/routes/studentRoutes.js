@@ -7,6 +7,6 @@ const { getSpecificEvaluationController, getEvaluationController, getSubjectsCon
 router.get('/dashboard', verification, checkRole('student'), getDashboardController);
 router.get('/subjects', verification, checkRole('student'), getSubjectsController);
 router.get('/evaluations', verification, checkRole('student'), getEvaluationController);
-router.get('/evaluations/id', verification, checkRole('student'), getSpecificEvaluationController);
+router.get('/evaluations/:id', verification, checkRole('student'), getSpecificEvaluationController);
 
 module.exports = router

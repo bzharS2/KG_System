@@ -57,7 +57,7 @@ const updateUserController = async (req, res) => {
         if (result.affectedRows == 0) {
             return res.status(404).json({ error: "user not found" });
         }
-        return res.status(200).json(result);
+        return res.status(200).json({message:`user updated successfully`});
     } catch (error) {
         return res.status(500).json({ error: `internal server error` })
 
@@ -77,7 +77,7 @@ const updateStatusController = async (req, res) => {
             return res.status(400).json({ error: `user doesn't exist` })
         }
         return res.status(200).json({
-            message: `student updated successfully`,
+            message: `student status updated successfully`,
         })
     } catch (error) {
         return res.status(500).json({ error: `internal server error` })
@@ -231,7 +231,7 @@ const updateTeacherAssignmentController = async (req, res) => {
         const [subjects] = await db.query(`SELECT * FROM subjects WHERE id=?`, [subject_id]);
         const [classes] = await db.query(`SELECT * FROM classes WHERE id =?`, [class_id]);
         const [assignment] = await db.query(`SELECT * FROM teaching_assignments WHERE id=?`, [assignment_id]);
-        const [check] = await db.query(`SELECT * FROM teaching_assignments WHERE teacher_id=? AND subject_id=? AND class_id!=? AND id = ?`, [teacher_id, subject_id, class_id, assignment_id]);
+        const [check] = await db.query(`SELECT * FROM teaching_assignments WHERE teacher_id=? AND subject_id=? AND class_id=? AND id != ?`, [teacher_id, subject_id, class_id, assignment_id]);
 
 
         if (teachers.length === 0) {
@@ -292,7 +292,7 @@ const createSubjectsController = async (req, res) => {
         return res.status(400).json({ error: `invalid inputs` })
     }
     try {
-        const [result] = await db.query('INSERT INTO subjects (name) VALUES(?)', [className.trim()])
+        const [result] = await db.query('INSERT INTO subjects (name) VALUES(?)', [subjectName.trim()])
         if (result.affectedRows === 0) {
             return res.status(400).json({ error: `that subject didn't get deleted` });
         }
@@ -304,12 +304,13 @@ const createSubjectsController = async (req, res) => {
 const updateSubjectsController = async (req, res) => {
     const id = req.params.id;
     const subjectName = req.body.name;
+    if (subjectName.trim() == "") {
+        return res.status(400).json({ error: `invalid inputs` });
+    }
     const formattedName =
         subjectName.trim().charAt(0).toUpperCase() +
         subjectName.trim().slice(1).toLowerCase();
-    if (formattedName == "") {
-        return res.status(400).json({ error: `invalid inputs` })
-    }
+    
     try {
         const [check] = await db.query(`SELECT * FROM subjects WHERE id=?`, [id]);
         if (check.length !== 1) {
@@ -373,7 +374,7 @@ const createStudentController = async (req, res) => {
         await db.query('INSERT INTO users (username,email,password,role,date_of_birth,class_id) VALUES(?,?,?,?,?,?)', [Username.trim(), Email.trim().toLowerCase(), hashedPassword, role, DoB, Class_id]);
         return res.status(201).json({ message: `Student enrolled successfully` })
     } catch (err) {
-        return res.status(500).json({ error: `internal sever error` })
+        return res.status(500).json({ error: err })
     }
 }
 

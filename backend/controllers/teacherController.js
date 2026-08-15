@@ -37,7 +37,7 @@ const getStudentController = async (req, res) => {
     try {
         const [result] = await db.query(
             `SELECT DISTINCT
-        student.id
+        student.id,
         student.username,
         student.email,
         student.date_of_birth,
@@ -59,7 +59,7 @@ const getStudentController = async (req, res) => {
         }
         return res.status(200).json(result);
     } catch (error) {
-        return res.status(500).json({ error: `internal sever error` })
+        return res.status(500).json({ error:error })
 
     }
 }
@@ -235,45 +235,51 @@ const updateStudentEvaluations = async (req, res) => {
             error: "invalid opinion value"
         });
     }
-    
-        try {
-            const [evaluation] = await db.query(
-                `SELECT evaluation.id
+
+    try {
+        const [evaluation] = await db.query(
+            `SELECT evaluation.id
              FROM evaluations AS evaluation
              JOIN teaching_assignments AS assignment
                  ON assignment.id = evaluation.teaching_assignment_id
              WHERE evaluation.id = ?
                AND assignment.teacher_id = ?`,
-                [evaluation_id, req.user.id]
-            );
+            [evaluation_id, req.user.id]
+        );
 
-            if (evaluation.length === 0) {
-                return res.status(404).json({
-                    error: "evaluation not found or you are not authorized to update it"
-                });
-            }
-
-            const [result] = await db.query(
-                `UPDATE evaluations
-             SET grade = ?, opinion = ?
-             WHERE id = ?`,
-                [grade, opinion.trim(), evaluation_id]
-            );
-
-            if (result.affectedRows === 0) {
-                return res.status(400).json({
-                    error: "evaluation was not updated"
-                });
-            }
-
-            return res.status(200).json({
-                message: "evaluation updated successfully"
-            });
-        } catch (error) {
-            return res.status(500).json({
-                error: "internal server error"
+        if (evaluation.length === 0) {
+            return res.status(404).json({
+                error: "evaluation not found or you are not authorized to update it"
             });
         }
-    }
 
-module.exports = { getTeacherDashboardController, getStudentController, createStudentEvaluation, getTeacherEvaluationsController,updateStudentEvaluations };
+        const [result] = await db.query(
+            `UPDATE evaluations
+             SET grade = ?, opinion = ?
+             WHERE id = ?`,
+            [grade, opinion.trim(), evaluation_id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(400).json({
+                error: "evaluation was not updated"
+            });
+        }
+
+        return res.status(200).json({
+            message: "evaluation updated successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+}
+
+module.exports = {
+    getTeacherDashboardController,
+    getStudentController,
+    createStudentEvaluation,
+    getTeacherEvaluationsController,
+    updateStudentEvaluations
+};
