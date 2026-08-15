@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const verification = require("../middleware/authMiddleware")
-const { getSubjectsController,
+const checkRole = require('../middleware/roleMiddleware');
+const { createStudentController,
+    createStaffController,
+    createTeacherController,
+    getSubjectsController,
     createSubjectsController,
     updateSubjectsController,
     deleteSubjectController,
@@ -21,28 +25,33 @@ const { getSubjectsController,
 } = require('../controllers/adminController')
 
 
-router.get('/dashboard', verification, getStatisticController);
-router.get('/users', verification, getUsersController);
-router.get('/user/:id', verification, getUserController);
-router.put('/updateUser/:id', verification, updateUserController);
-router.put('/updateUser/:id/status', verification, updateStatusController);
+router.post('/students', verification, checkRole('admin'), createStudentController);
+router.post('/staff', verification, checkRole('admin'), createStaffController);
+router.post('/teacher', verification, checkRole('admin'), createTeacherController);
+
+
+router.get('/dashboard', verification, checkRole('admin'), getStatisticController);
+router.get('/users', verification, checkRole('admin'), getUsersController);
+router.get('/user/:id', verification, checkRole('admin'), getUserController);
+router.put('/updateUser/:id', verification, checkRole('admin'), updateUserController);
+router.put('/updateUser/:id/status', verification, checkRole('admin'), updateStatusController);
 
 // made CRUD operations for the classes
-router.get('/classes', verification, getClassesController);
-router.post('/createClass', verification, createClassesController);
-router.put('/class/:id', verification, updateClassesController);
-router.delete('class/:id', verification, deleteClassController);
+router.get('/classes', verification, checkRole('admin'), getClassesController);
+router.post('/createClass', verification, checkRole('admin'), createClassesController);
+router.put('/class/:id', verification, checkRole('admin'), updateClassesController);
+router.delete('class/:id', verification, checkRole('admin'), deleteClassController);
 
 // make CRUD operations for the teaching_assignments
-router.get('/teacher_assignments', verification, getTeacherAssignmentsController);
-router.post('/teacher_assignments', verification, createTeacherAssignmentController);
-router.put('/teacher_assignments/:id', verification, updateTeacherAssignmentController);
-router.delete('/teacher_assignments/:id', verification, deleteTeacherAssignmentController);
+router.get('/teacher_assignments', verification, checkRole('admin'), getTeacherAssignmentsController);
+router.post('/teacher_assignments', verification, checkRole('admin'), createTeacherAssignmentController);
+router.put('/teacher_assignments/:id', verification, checkRole('admin'), updateTeacherAssignmentController);
+router.delete('/teacher_assignments/:id', verification, checkRole('admin'), deleteTeacherAssignmentController);
 
 //make CRUD operations for the subjects
-router.get('/subjects', verification, getSubjectsController);
-router.post('/subjects',verification,createSubjectsController);
-router.put('/subjects/:id', verification, updateTeacherAssignmentController);
-router.delete('/subjects/:id', verification, deleteTeacherAssignmentController);
+router.get('/subjects', verification, checkRole('admin'), getSubjectsController);
+router.post('/subjects', verification, checkRole('admin'), createSubjectsController);
+router.put('/subjects/:id', verification, checkRole('admin'), updateTeacherAssignmentController);
+router.delete('/subjects/:id', verification, checkRole('admin'), deleteTeacherAssignmentController);
 
 module.exports = router;
