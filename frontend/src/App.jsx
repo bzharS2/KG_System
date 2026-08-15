@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
+import AdminDashboard from "./pages/admin/dashboard";
 function App() {
+  var shit;
   return (
     <BrowserRouter>
       <Routes>
@@ -8,7 +11,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>} />
 
         {/* Admin */}
-        <Route path="/admin/dashboard" element={<h1>Admin Dashboard</h1>} />
+        <Route path="/admin/dashboard" element={<AdminDashboard/>} />
         <Route path="/admin/users" element={<h1>Users</h1>} />
         <Route path="/admin/classes" element={<h1>Classes</h1>} />
         <Route path="/admin/subjects" element={<h1>Subjects</h1>} />

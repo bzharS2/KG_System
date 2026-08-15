@@ -8,15 +8,23 @@ import {
 } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { use } from "react";
-import login from "../services/api";
+import {login} from "../services/api";
 
 function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   async function handleLogin(e) {
     e.preventDefault();
-    const log = await login(email, password);
-    console.log(log)
+    const data = await login(email, password);
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.id);
+      localStorage.setItem("role", data.role);
+    }
+    if (data.role == "admin") {
+      navigate('/admin/dashboard');
+    }
   }
   return (
     <div>
