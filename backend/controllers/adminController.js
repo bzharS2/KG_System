@@ -40,26 +40,30 @@ const getUserController = async (req, res) => {
 }
 const updateUserController = async (req, res) => {
     const id = req.params.id;
-    const { username, email, role, date_of_birth, status } = req.body;
+    const { username, email, role, password,date_of_birth, status } = req.body;
     if (email.trim().toLowerCase() == ""
         || username.trim() == ""
         || role.trim() == ""
         || date_of_birth.trim() == ""
-        || status.trim() == "") {
+        || status.trim() == ""
+        || password.trim()=="") {
         return res.status(400).json({ error: `invalid inputs` })
     }
     try {//check for a user with the same new email except for the current user
+
+        
         const [isEmail] = await db.query('SELECT * FROM users WHERE email=? AND id!=?', [email.trim().toLowerCase(), id]);
         if (isEmail.length != 0) {
             return res.status(400).json({ error: `email already exists` });
         }
-        const [result] = await db.query('UPDATE  users SET username=?,email=?,role=?,date_of_birth=?, status=? WHERE id=?', [username.trim(), email.trim().toLowerCase(), role.trim().toLowerCase(), date_of_birth.trim(), status.trim().toLowerCase(), id]);
+        const hashedPassword= await bcrypt.hash(password,10);
+        const [result] = await db.query('UPDATE  users SET username=?,email=?,password=?,role=?,date_of_birth=?, status=? WHERE id=?', [username.trim(), email.trim().toLowerCase(),hashedPassword, role.trim().toLowerCase(), date_of_birth.trim(), status.trim().toLowerCase(), id]);
         if (result.affectedRows == 0) {
             return res.status(404).json({ error: "user not found" });
         }
         return res.status(200).json({message:`user updated successfully`});
     } catch (error) {
-        return res.status(500).json({ error: `internal server error` })
+        return res.status(500).json({ error: error })
 
     }
 }
