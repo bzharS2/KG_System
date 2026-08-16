@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { use } from "react";
-import {getAdminDashboard} from "../../services/api";
+import { getAdminDashboard } from "../../services/api";
 
 function AdminDashboard() {
   const [data, setData] = useState(null);
@@ -19,7 +19,6 @@ function AdminDashboard() {
 
       const result = await getAdminDashboard(token);
 
-      console.log(result);
       setData(result);
     }
 
@@ -30,11 +29,18 @@ function AdminDashboard() {
     <div>
       <h1>Admin Dashboard</h1>
 
-      {data && <p>students: {data.students}
-        teachers: {data.teachers}
-        staff: {data.staff}
-        classes: {data.classes}
-        </p>}
+      {data && (
+        <p>
+          <ul>
+            <li>students: {data.students}</li>
+            <li>teachers: {data.teachers}</li>
+            <li>staff: {data.staff}</li>
+            <li>classes: {data.classes}</li>
+          </ul>
+        </p>
+      )}
+
+      
     </div>
   );
 }

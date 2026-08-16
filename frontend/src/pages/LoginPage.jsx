@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { use } from "react";
-import {login} from "../services/api";
+import { login } from "../services/api";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -23,7 +23,13 @@ function LoginPage() {
       localStorage.setItem("role", data.role);
     }
     if (data.role == "admin") {
-      navigate('/admin/dashboard');
+      return navigate("/admin/dashboard");
+    } else if (data.role == "student") {
+      return navigate("/student/dashboard");
+    } else if (data.role == "teacher") {
+      return navigate("/teacher/dashboard");
+    } else {
+      return alert(data.error);
     }
   }
   return (

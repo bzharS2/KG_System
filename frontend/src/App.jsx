@@ -2,22 +2,27 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminDashboard from "./pages/admin/dashboard";
+import Users from "./pages/admin/users";
+import Classes from "./pages/admin/classes";
+import Subjects from "./pages/admin/subjects";
+import Assignments from "./pages/admin/assignments";
+
 function App() {
   var shit;
   return (
     <BrowserRouter>
       <Routes>
         {/* Authentication */}
-        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/login" element={<LoginPage />} />
 
         {/* Admin */}
-        <Route path="/admin/dashboard" element={<AdminDashboard/>} />
-        <Route path="/admin/users" element={<h1>Users</h1>} />
-        <Route path="/admin/classes" element={<h1>Classes</h1>} />
-        <Route path="/admin/subjects" element={<h1>Subjects</h1>} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/classes" element={<Classes/>} />
+        <Route path="/admin/subjects" element={<Subjects/>} />
         <Route
           path="/admin/assignments"
-          element={<h1>Teaching Assignments</h1>}
+          element={< Assignments/>}
         />
 
         {/* Teacher */}
