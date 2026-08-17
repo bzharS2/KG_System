@@ -16,11 +16,14 @@ import UserForm from "../../components/UserForm";
 import { createStaff } from "../../services/api";
 import { createStudent } from "../../services/api";
 import { createTeacher } from "../../services/api";
+import { updateUser } from "../../services/api";
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [classes, setClasses] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [fromUpdate, setFromUpdate] = useState(false);
+  const [user, setUser] = useState("");
   async function loadUsers() {
     const token = localStorage.getItem("token");
     const result = await getUsers(token);
@@ -36,6 +39,7 @@ function Users() {
     loadClasses();
     loadUsers();
   }, []);
+
   async function createUser(fromData) {
     const token = localStorage.getItem("token");
     if (fromData.role == "student") {
@@ -46,6 +50,17 @@ function Users() {
       const result = await createStaff(token, fromData);
     }
     loadUsers();
+  }
+  async function update(fromData) {
+    const id = fromData.id;
+    const token = localStorage.getItem("token");
+    const result = await updateUser(token, fromData, id);
+    if (!result.message) {
+      alert(`${result.error}`)
+    }
+    loadUsers();
+    setShowForm(false);
+    setFromUpdate(false);
   }
 
   return (
@@ -67,6 +82,17 @@ function Users() {
           onCancel={() => setShowForm(false)}
         />
       )}
+      {fromUpdate && (
+        <UserForm
+          user={user}
+          classes={classes}
+          onSubmit={update}
+          onCancel={() => {
+            setShowForm(false);
+            setFromUpdate(false);
+          }}
+        />
+      )}
       <h3>users: </h3>
       {users.map((user) => (
         <div key={user.id}>
@@ -74,6 +100,14 @@ function Users() {
           <p>{user.email}</p>
           <p>{user.role}</p>
           <p>{user.status}</p>
+          <button
+            onClick={() => {
+              setFromUpdate(true);
+              setUser(user);
+            }}
+          >
+            Update
+          </button>
         </div>
       ))}
     </div>

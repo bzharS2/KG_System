@@ -13,10 +13,12 @@ function UserForm({ user, classes, onSubmit, onCancel }) {
   // If user exists, we're editing
   useEffect(() => {
     if (user) {
+      const formattedDate = user.date_of_birth.split("T")[0];
+
       setUsername(user.username || "");
       setEmail(user.email || "");
       setRole(user.role || "student");
-      setDateOfBirth(user.date_of_birth || "");
+      setDateOfBirth(formattedDate || "");
       setStatus(user.status || "active");
       setClassId(user.class_id || "");
       setPassword("");
@@ -35,6 +37,7 @@ function UserForm({ user, classes, onSubmit, onCancel }) {
     e.preventDefault();
 
     const formData = {
+      id: user?.id,
       username,
       email,
       password,
@@ -50,9 +53,7 @@ function UserForm({ user, classes, onSubmit, onCancel }) {
   return (
     <form className="user-form" onSubmit={handleSubmit}>
       <div className="user-form__header">
-        <span className="user-form__tag">
-          {user ? "EDIT" : "NEW"}
-        </span>
+        <span className="user-form__tag">{user ? "EDIT" : "NEW"}</span>
         <h2 className="user-form__title">
           {user ? "Update User" : "Create User"}
         </h2>
@@ -133,10 +134,17 @@ function UserForm({ user, classes, onSubmit, onCancel }) {
       </div>
 
       <div className="user-form__actions">
-        <button type="button" className="user-form__btn user-form__btn--ghost" onClick={onCancel}>
+        <button
+          type="button"
+          className="user-form__btn user-form__btn--ghost"
+          onClick={onCancel}
+        >
           Cancel
         </button>
-        <button type="submit" className="user-form__btn user-form__btn--primary">
+        <button
+          type="submit"
+          className="user-form__btn user-form__btn--primary"
+        >
           {user ? "Update User" : "Create User"}
         </button>
       </div>

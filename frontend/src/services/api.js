@@ -120,5 +120,23 @@ async function createStaff(token, formData) {
   const data = await response.json();
   return data;
 }
+async function updateUser(token, formData,id) {
+  const response = await fetch(`http://localhost:5000/admin/updateUser/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      username: formData.username,
+      email: formData.email,
+      role:formData.role,
+      password: formData.password,
+      date_of_birth: formData.date_of_birth,
+      status:formData.status
+    })
+  })
+  const data = await response.json();
+  return data;
+}
 
-export { login, getAdminDashboard, getUsers, getClasses, getSubjects, getAssignments, createStaff, createStudent, createTeacher };
+export { login, getAdminDashboard, getUsers, getClasses, getSubjects, getAssignments, createStaff, createStudent, createTeacher,updateUser };
