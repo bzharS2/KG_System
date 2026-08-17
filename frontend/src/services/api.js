@@ -71,6 +71,54 @@ async function getAssignments(token) {
   const data = await response.json();
   return data;
 }
+async function createStudent(token, formData) {
+  const response = await fetch("http://localhost:5000/admin/students", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      Username: formData.username,
+      Email: formData.email,
+      Password: formData.password,
+      DoB: formData.date_of_birth,
+      Class_id: formData.class_id
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function createTeacher(token, formData) {
+  const response = await fetch("http://localhost:5000/admin/teacher", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      Username: formData.username,
+      Email: formData.email,
+      Password: formData.password,
+      DoB: formData.date_of_birth,
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function createStaff(token, formData) {
+  const response = await fetch("http://localhost:5000/admin/staff", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      Username: formData.username,
+      Email: formData.email,
+      Password: formData.password,
+      DoB: formData.date_of_birth,
+    })
+  })
+  const data = await response.json();
+  return data;
+}
 
-
-export { login, getAdminDashboard, getUsers, getClasses,getSubjects,getAssignments };
+export { login, getAdminDashboard, getUsers, getClasses, getSubjects, getAssignments, createStaff, createStudent, createTeacher };

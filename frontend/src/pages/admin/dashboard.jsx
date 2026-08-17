@@ -9,7 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { use } from "react";
 import { getAdminDashboard } from "../../services/api";
-
+import AdminNavbar from "../../components/AdminNavbar";
 function AdminDashboard() {
   const [data, setData] = useState(null);
 
@@ -27,20 +27,18 @@ function AdminDashboard() {
 
   return (
     <div>
+      <AdminNavbar />
+
       <h1>Admin Dashboard</h1>
 
       {data && (
-        <p>
-          <ul>
-            <li>students: {data.students}</li>
-            <li>teachers: {data.teachers}</li>
-            <li>staff: {data.staff}</li>
-            <li>classes: {data.classes}</li>
-          </ul>
-        </p>
+        <ul>
+          <li>students: {data.students}</li>
+          <li>teachers: {data.teachers}</li>
+          <li>staff: {data.staff}</li>
+          <li>classes: {data.classes}</li>
+        </ul>
       )}
-
-      
     </div>
   );
 }

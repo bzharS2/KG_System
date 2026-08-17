@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { use } from "react";
 import { getAssignments } from "../../services/api";
+import AdminNavbar from "../../components/AdminNavbar";
 
 function Assignments() {
   const [assignments, setAssignments] = useState([]);
@@ -22,6 +23,7 @@ function Assignments() {
   }, []);
   return (
     <div>
+      <AdminNavbar/>
       {assignments.map((assignment) => (
         <div key={assignment.id}>
           <h1>{assignment.teacher}</h1>

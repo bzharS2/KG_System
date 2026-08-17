@@ -9,7 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { use } from "react";
 import { getClasses } from "../../services/api";
-
+import AdminNavbar from "../../components/AdminNavbar";
 function Classes() {
   const [classes, setClasses] = useState([]);
   useEffect(() => {
@@ -20,12 +20,16 @@ function Classes() {
     }
     loadClasses();
   }, []);
-  return <div>
-    {classes.map((level) => (
+  return (
+    <div>
+      <AdminNavbar />
+
+      {classes.map((level) => (
         <div key={level.id}>
-            <p>{level.name}</p>
+          <p>{level.name}</p>
         </div>
       ))}
     </div>
+  );
 }
 export default Classes;
