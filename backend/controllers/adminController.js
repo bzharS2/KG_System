@@ -78,6 +78,7 @@ const updateUserController = async (req, res) => {
     }
 }
 
+
 const updateStatusController = async (req, res) => {
     const id = req.params.id;
     const status = req.body.status;
@@ -479,7 +480,79 @@ async function createUser(username, email, password, dateOfBirth, role) {
 
 
 }
+
+const sortByTeacher = async (req, res) => {
+    const result = await sortUsers("role", "teacher");
+
+    if (!result) {
+        return res.status(500).json({ error: "internal server error" });
+    }
+
+    return res.status(200).json(result);
+};
+
+const sortByStaff = async (req, res) => {
+    const result = await sortUsers("role", "staff");
+
+    if (!result) {
+        return res.status(500).json({ error: "internal server error" });
+    }
+
+    return res.status(200).json(result);
+};
+
+const sortByStudent = async (req, res) => {
+    const result = await sortUsers("role", "student");
+
+    if (!result) {
+        return res.status(500).json({ error: "internal server error" });
+    }
+
+    return res.status(200).json(result);
+};
+
+const sortByActive = async (req, res) => {
+    const result = await sortUsers("status", "active");
+
+    if (!result) {
+        return res.status(500).json({ error: "internal server error" });
+    }
+
+    return res.status(200).json(result);
+};
+
+const sortByInactive = async (req, res) => {
+    const result = await sortUsers("status", "inactive");
+
+    if (!result) {
+        return res.status(500).json({ error: "internal server error" });
+    }
+
+    return res.status(200).json(result);
+};
+
+async function sortUsers(column, value) {
+    try {
+        const [result] = await db.query(
+            `SELECT id, username, email, role, date_of_birth, status
+             FROM users
+             WHERE ${column}=?
+             ORDER BY username ASC`,
+            [value]
+        );
+
+        return result;
+    } catch (error) {
+        return false;
+    }
+}
+
 module.exports = {
+    sortByTeacher,
+    sortByStaff,
+    sortByStudent,
+    sortByActive,
+    sortByInactive,
     createStaffController,
     createStudentController,
     createTeacherController,

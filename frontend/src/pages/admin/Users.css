@@ -1,0 +1,396 @@
+/* ==========================================================================
+   Users.css
+   Admin directory list. Continues the ledger/record-card system from the
+   login page: paper background, ink text, brass accent for actions,
+   and small mono-esque badges for role/status — read like index tags
+   on a filed record rather than generic pill buttons.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+  --green-600: #3f7d5c;
+  --green-100: #e6f0ea;
+  --red-600: #b3432f;
+  --red-100: #f7e9e5;
+  --blue-600: #3a5a9c;
+  --blue-100: #e8edf7;
+  --violet-600: #7a5ca8;
+  --violet-100: #efe9f6;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.users-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.users-page__container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* -------------------------------------------------------------------- */
+/* Header                                                                */
+/* -------------------------------------------------------------------- */
+
+.users-page__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+.users-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.users-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+}
+
+.users-create-btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--paper-050);
+  background: var(--ink-900);
+  border: none;
+  border-radius: 3px;
+  padding: 11px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.users-create-btn:hover {
+  background: var(--ink-700);
+}
+
+.users-create-btn:active {
+  transform: translateY(1px);
+}
+
+.users-create-btn:focus-visible {
+  outline: 2px solid var(--brass-500);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------- */
+/* List                                                                  */
+/* -------------------------------------------------------------------- */
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.users-empty {
+  font-size: 14px;
+  color: var(--ink-500);
+  padding: 24px 0;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 4px;
+  padding: 16px 20px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.user-card:hover {
+  border-color: rgba(22, 34, 61, 0.2);
+  box-shadow: 0 4px 14px -8px rgba(22, 34, 61, 0.25);
+}
+
+.user-card__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-card__name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 2px;
+}
+
+.user-card__email {
+  font-size: 13px;
+  color: var(--ink-500);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-card__meta {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.user-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: var(--paper-100);
+  color: var(--ink-700);
+  white-space: nowrap;
+}
+
+/* role variants */
+.user-badge--role-admin {
+  background: var(--violet-100);
+  color: var(--violet-600);
+}
+.user-badge--role-teacher {
+  background: var(--blue-100);
+  color: var(--blue-600);
+}
+.user-badge--role-student {
+  background: var(--paper-100);
+  color: var(--ink-700);
+}
+
+/* status variants */
+.user-badge--status-active {
+  background: var(--green-100);
+  color: var(--green-600);
+}
+.user-badge--status-inactive,
+.user-badge--status-suspended,
+.user-badge--status-disabled {
+  background: var(--red-100);
+  color: var(--red-600);
+}
+.user-badge--status-pending {
+  background: var(--paper-100);
+  color: var(--brass-600);
+}
+
+.user-card__update-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-900);
+  background: transparent;
+  border: 1px solid rgba(22, 34, 61, 0.18);
+  border-radius: 3px;
+  padding: 8px 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.user-card__update-btn:hover {
+  background: var(--paper-100);
+  border-color: rgba(22, 34, 61, 0.32);
+}
+
+.user-card__update-btn:focus-visible {
+  outline: 2px solid var(--brass-500);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 560px) {
+  .users-page__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-card {
+    flex-wrap: wrap;
+  }
+
+  .user-card__meta {
+    order: 3;
+    width: 100%;
+  }
+
+  .user-card__update-btn {
+    order: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-card,
+  .users-create-btn,
+  .user-card__update-btn {
+    transition: none;
+  }
+}
+/* ==========================================================================
+   Users.css — additions for role/status filter bar
+   Append this block to the end of your existing Users.css.
+   Uses the same --ink / --paper / --brass variables already defined there.
+   ========================================================================== */
+
+.users-filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.users-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.users-filter-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  margin-right: 2px;
+}
+
+.users-filter-divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(22, 34, 61, 0.1);
+}
+
+.filter-chip {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-700);
+  background: var(--paper-100);
+  border: 1px solid rgba(22, 34, 61, 0.14);
+  border-radius: 999px;
+  padding: 6px 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, background 0.15s ease,
+    color 0.15s ease, transform 0.1s ease;
+}
+
+.filter-chip:hover {
+  border-color: currentColor;
+  transform: translateY(-1px);
+}
+
+.filter-chip:active {
+  transform: translateY(0);
+}
+
+.filter-chip:focus-visible {
+  outline: 2px solid var(--brass-500);
+  outline-offset: 2px;
+}
+
+/* tint each chip toward the badge color it filters for */
+.filter-chip--status-active:hover {
+  background: var(--green-100);
+  color: var(--green-600);
+}
+.filter-chip--status-inactive:hover {
+  background: var(--red-100);
+  color: var(--red-600);
+}
+.filter-chip--role-teacher:hover {
+  background: var(--blue-100);
+  color: var(--blue-600);
+}
+.filter-chip--role-student:hover {
+  background: var(--paper-100);
+  color: var(--ink-900);
+  border-color: var(--ink-900);
+}
+.filter-chip--role-staff:hover {
+  background: var(--violet-100);
+  color: var(--violet-600);
+}
+
+.users-filter-reset {
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-500);
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  padding: 6px 4px;
+}
+
+.users-filter-reset:hover {
+  color: var(--ink-900);
+}
+
+.users-filter-reset:focus-visible {
+  outline: 2px solid var(--brass-500);
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .users-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .users-filter-divider {
+    display: none;
+  }
+
+  .users-filter-reset {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-chip {
+    transition: none;
+  }
+}

@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const verification = require("../middleware/authMiddleware")
 const checkRole = require('../middleware/roleMiddleware');
-const { createStudentController,
+const { sortByRole,
+    sortByActive,
+    sortByInactive,
+    createStudentController,
     createStaffController,
     createTeacherController,
     getSubjectsController,
@@ -21,7 +24,10 @@ const { createStudentController,
     getUsersController,
     getStatisticController,
     updateUserController,
-    updateStatusController
+    updateStatusController,
+    sortByTeacher,
+    sortByStaff,
+    sortByStudent
 } = require('../controllers/adminController')
 
 
@@ -34,7 +40,7 @@ router.get('/dashboard', verification, checkRole('admin'), getStatisticControlle
 router.get('/users', verification, checkRole('admin'), getUsersController);
 router.get('/user/:id', verification, checkRole('admin'), getUserController);
 router.put('/updateUser/:id', verification, checkRole('admin'), updateUserController);
-router.put('/updateUser/:id/status', verification, checkRole('admin'), updateStatusController);
+// router.put('/updateUser/:id/status', verification, checkRole('admin'), updateStatusController);
 
 // made CRUD operations for the classes    checked
 router.get('/classes', verification, checkRole('admin'), getClassesController);
@@ -53,5 +59,11 @@ router.get('/subjects', verification, checkRole('admin'), getSubjectsController)
 router.post('/subjects', verification, checkRole('admin'), createSubjectsController);
 router.put('/subjects/:id', verification, checkRole('admin'), updateSubjectsController);
 router.delete('/subjects/:id', verification, checkRole('admin'), deleteSubjectController);
+
+router.get('/user/sort/status/active', verification, checkRole("admin"), sortByActive);
+router.get('/user/sort/status/inactive', verification, checkRole("admin"), sortByInactive);
+router.get('/user/sort/role/teacher', verification, checkRole("admin"), sortByTeacher);
+router.get('/user/sort/role/staff', verification, checkRole("admin"), sortByStaff);
+router.get('/user/sort/role/student', verification, checkRole("admin"), sortByStudent);
 
 module.exports = router;

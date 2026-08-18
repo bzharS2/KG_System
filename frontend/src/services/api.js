@@ -120,7 +120,7 @@ async function createStaff(token, formData) {
   const data = await response.json();
   return data;
 }
-async function updateUser(token, formData,id) {
+async function updateUser(token, formData, id) {
   const response = await fetch(`http://localhost:5000/admin/updateUser/${id}`, {
     method: "PUT",
     headers: {
@@ -129,14 +129,51 @@ async function updateUser(token, formData,id) {
     }, body: JSON.stringify({
       username: formData.username,
       email: formData.email,
-      role:formData.role,
+      role: formData.role,
       password: formData.password,
       date_of_birth: formData.date_of_birth,
-      status:formData.status
+      status: formData.status
     })
   })
   const data = await response.json();
   return data;
 }
+async function getUsersByRole(token, role) {
+  const response = await fetch(`http://localhost:5000/admin/user/sort/role/${role}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data
+}
+async function getUsersByStatus(token, status) {
+  const response = await fetch(`http://localhost:5000/admin/user/sort/status/${status}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  
+  })
+  const data = await response.json();
+  return data
+}
 
-export { login, getAdminDashboard, getUsers, getClasses, getSubjects, getAssignments, createStaff, createStudent, createTeacher,updateUser };
+
+export {
+  login,
+  getAdminDashboard,
+  getUsers,
+  getClasses,
+  getSubjects,
+  getAssignments,
+  createStaff,
+  createStudent,
+  createTeacher,
+  updateUser,
+  getUsersByRole,
+  getUsersByStatus
+}
