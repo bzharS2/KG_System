@@ -1,0 +1,147 @@
+/* ==========================================================================
+   AdminDashboard.css
+   Overview screen: four record counts shown as filed "stat cards" —
+   continues the ledger system (paper background, brass-numbered index,
+   serif figures) used across the login and users pages.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.dashboard-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.dashboard-page__container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.dashboard-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.dashboard-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+.dashboard-loading {
+  font-size: 14px;
+  color: var(--ink-500);
+  padding: 24px 0;
+}
+
+/* -------------------------------------------------------------------- */
+/* Stat cards                                                            */
+/* -------------------------------------------------------------------- */
+
+.dashboard-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  position: relative;
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 4px;
+  padding: 22px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brass-500), var(--brass-600));
+}
+
+.stat-card:hover {
+  border-color: rgba(22, 34, 61, 0.2);
+  box-shadow: 0 10px 24px -14px rgba(22, 34, 61, 0.3);
+  transform: translateY(-2px);
+}
+
+.stat-card__index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--brass-500);
+}
+
+.stat-card__value {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--ink-900);
+  line-height: 1.1;
+}
+
+.stat-card__label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-card {
+    transition: none;
+  }
+}
