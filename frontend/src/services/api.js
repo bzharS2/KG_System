@@ -156,12 +156,46 @@ async function getUsersByStatus(token, status) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     },
-  
+
   })
   const data = await response.json();
   return data
 }
-
+async function createClass(token, className) {
+  const response = await fetch("http://localhost:5000/admin/createClass", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      name: className.name
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function deleteClass(token, id) {
+  const response = await fetch(`http://localhost:5000/admin/class/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  })
+  const data = await response.json();
+  return data;
+}
+async function updateClass(token, formData, id) {
+  const response = await fetch(`http://localhost:5000/admin/class/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      name: formData.name
+    })
+  })
+}
 
 export {
   login,
@@ -175,5 +209,8 @@ export {
   createTeacher,
   updateUser,
   getUsersByRole,
-  getUsersByStatus
+  getUsersByStatus,
+  createClass,
+  deleteClass,
+  updateClass
 }

@@ -117,11 +117,15 @@ const createClassesController = async (req, res) => {
         return res.status(400).json({ error: `invalid inputs` })
     }
     try {
+     const [check] =await db.query(`SELECT * FROM classes WHERE name = ? `,[className]);
+     if (check.length!==0) {
+        return res.status(400).json({error:`a class with that name already exists`});
+     }
         const [result] = await db.query('INSERT INTO classes (name) VALUES(?)', [className.trim().toUpperCase()])
         return res.status(200).json({ message: `class created successfully` })
 
     } catch (error) {
-        return res.status(500).json({ error: error })
+        return res.status(500).json({ error: `internal server error` })
     }
 }
 const updateClassesController = async (req, res) => {
@@ -307,13 +311,13 @@ const createSubjectsController = async (req, res) => {
         return res.status(400).json({ error: `invalid inputs` })
     }
     try {
-        const [result] = await db.query('INSERT INTO subjects (name) VALUES(?)', [subjectName.trim()])
+        const [result] = await db.query('INSERT INTO subjects (name) VALUES(?)', [subjectName.trim().toUpperCase()])
         if (result.affectedRows === 0) {
-            return res.status(400).json({ error: `that subject didn't get deleted` });
+            return res.status(400).json({ error: `idk something happened` });
         }
-        return res.status(200).json({ message: `class created successfully` });
+        return res.status(200).json({ message: `subject created successfully` });
     } catch (error) {
-        return res.status(500).json({ error: error })
+        return res.status(500).json({ error: `internal server error` })
     }
 }
 const updateSubjectsController = async (req, res) => {
