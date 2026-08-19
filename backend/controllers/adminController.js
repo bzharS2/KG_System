@@ -117,10 +117,10 @@ const createClassesController = async (req, res) => {
         return res.status(400).json({ error: `invalid inputs` })
     }
     try {
-     const [check] =await db.query(`SELECT * FROM classes WHERE name = ? `,[className]);
-     if (check.length!==0) {
-        return res.status(400).json({error:`a class with that name already exists`});
-     }
+        const [check] = await db.query(`SELECT * FROM classes WHERE name = ? `, [className]);
+        if (check.length !== 0) {
+            return res.status(400).json({ error: `a class with that name already exists` });
+        }
         const [result] = await db.query('INSERT INTO classes (name) VALUES(?)', [className.trim().toUpperCase()])
         return res.status(200).json({ message: `class created successfully` })
 
@@ -310,8 +310,16 @@ const createSubjectsController = async (req, res) => {
     if (subjectName.trim() == "") {
         return res.status(400).json({ error: `invalid inputs` })
     }
+    const formattedName =
+        subjectName.trim().charAt(0).toUpperCase() +
+        subjectName.trim().slice(1).toLowerCase();
     try {
-        const [result] = await db.query('INSERT INTO subjects (name) VALUES(?)', [subjectName.trim().toUpperCase()])
+        const [check] = await db.query(`SELECT * FROM subjects WHERE name=?`, [formattedName]);
+        if (check.length != 0) {
+            return res.status(400).json({ error: `A subject with that name exists already` });
+
+        }
+        const [result] = await db.query('INSERT INTO subjects (name) VALUES(?)', [formattedName])
         if (result.affectedRows === 0) {
             return res.status(400).json({ error: `idk something happened` });
         }

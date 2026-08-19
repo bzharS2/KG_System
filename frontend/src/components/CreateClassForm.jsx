@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-function CreateClassFrom({ level, onSubmit, onCancel }) {
+
+// level means class onSubmit means when clicked it will perform a function onCancel is to not show the form by making it false and subjects is boolean used to determine if the form is used for subjects or class
+function CreateClassFrom({ level, onSubmit, onCancel, subjects }) {
   const [name, setName] = useState("");
 
   // If user exists, we're editing
@@ -28,13 +30,15 @@ function CreateClassFrom({ level, onSubmit, onCancel }) {
       <div className="user-form__header">
         <span className="user-form__tag">{level ? "EDIT" : "NEW"}</span>
         <h2 className="user-form__title">
-          {level ? `Update class` : `Create class`}
+          {level
+            ? `Update ${subjects ? `subjects` : `class`}`
+            : `Create ${subjects ? `subjects` : `class`}`}
         </h2>
       </div>
 
       <div className="user-form__grid">
         <div className="user-form__field">
-          <label>Class Name</label>
+          <label>{subjects ? `subjects` : `class`} Name</label>
           <input
             type="text"
             value={name}
@@ -55,7 +59,9 @@ function CreateClassFrom({ level, onSubmit, onCancel }) {
           type="submit"
           className="user-form__btn user-form__btn--primary"
         >
-          {level ? `Update class` : `Create class`}
+          {level
+            ? `Update ${subjects ? `subjects` : `class`}`
+            : `Create ${subjects ? `subjects` : `class`}`}
         </button>
       </div>
     </form>

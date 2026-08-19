@@ -27,17 +27,24 @@ function Classes() {
   async function createC(fromData) {
     const token = localStorage.getItem("token");
     const result = await createClass(token, fromData);
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
     loadClasses();
   }
   async function updateC(fromData) {
     const id = fromData.id;
     const token = localStorage.getItem("token");
     const result = await updateClass(token, fromData, id);
-  
+     if (result.error) {
+      alert(result.error);
+      return;
+    }
     loadClasses();
   }
   async function deleteC(id) {
-    const ans = window.confirm(`do you want to create that class`);
+    const ans = window.confirm(`do you want to delete that class`);
     if (!ans) {
       return;
     }
@@ -45,6 +52,7 @@ function Classes() {
     const result = await deleteClass(token, id);
     if (result.error) {
       alert(result.error);
+      return;
     }
     loadClasses();
   }
@@ -82,6 +90,7 @@ function Classes() {
             level={null}
             onSubmit={createC}
             onCancel={() => setShowForm(false)}
+            subjects={false}
           />
         )}
         {fromUpdate && (
@@ -89,6 +98,7 @@ function Classes() {
             level={level}
             onSubmit={updateC}
             onCancel={() => setFromUpdate(false)}
+            subjects={false}
           />
         )}
 

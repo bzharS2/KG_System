@@ -195,8 +195,46 @@ async function updateClass(token, formData, id) {
       name: formData.name
     })
   })
+  const data = await response.json();
+  return data;
 }
-
+async function createSubjects(token, className) {
+  const response = await fetch("http://localhost:5000/admin/subjects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      name: className.name
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function deleteSubjects(token, id) {
+  const response = await fetch(`http://localhost:5000/admin/subjects/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  })
+  const data = await response.json();
+  return data;
+}
+async function updateSubjects(token, formData, id) {
+  const response = await fetch(`http://localhost:5000/admin/subjects/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      name: formData.name
+    })
+  })
+  const data = await response.json();
+  return data
+}
 export {
   login,
   getAdminDashboard,
@@ -212,5 +250,8 @@ export {
   getUsersByStatus,
   createClass,
   deleteClass,
-  updateClass
+  updateClass,
+  createSubjects,
+  deleteSubjects,
+  updateSubjects
 }
