@@ -235,6 +235,59 @@ async function updateSubjects(token, formData, id) {
   const data = await response.json();
   return data
 }
+async function getTeachers(token) {
+  const response = await fetch("http://localhost:5000/admin/teachers", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function createAssignment(token, values) {
+  const response = await fetch("http://localhost:5000/admin/teacher_assignments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+
+      teacher_id: values.teacher_id,
+      subject_id: values.subject_id,
+      class_id: values.class_id
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function deleteAssignment(token, id) {
+  const response = await fetch(`http://localhost:5000/admin/teacher_assignments/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  })
+  const data = await response.json();
+  return data;
+}
+async function updateAssignment(token, formData, id) {
+  const response = await fetch(`http://localhost:5000/admin/teacher_assignments/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      teacher_id: formData.teacher_id,
+      subject_id:formData.subject_id,
+      class_id:formData.class_id
+    })
+  })
+  const data = await response.json();
+  return data;
+}
 export {
   login,
   getAdminDashboard,
@@ -253,5 +306,9 @@ export {
   updateClass,
   createSubjects,
   deleteSubjects,
-  updateSubjects
+  updateSubjects,
+  getTeachers,
+  createAssignment,
+  deleteAssignment,
+  updateAssignment
 }

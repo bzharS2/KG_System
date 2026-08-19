@@ -23,7 +23,7 @@ function Subjects() {
   const [showForm, setShowForm] = useState(false);
   const [fromUpdate, setFromUpdate] = useState(false);
   const [subject, setSubject] = useState(null);
-  async function loadClasses() {
+  async function loadSubjects() {
     const token = localStorage.getItem("token");
     const result = await getSubjects(token);
     setSubjects(result);
@@ -35,7 +35,7 @@ function Subjects() {
       alert(result.error);
       return;
     }
-    loadClasses();
+    loadSubjects();
   }
   async function updateSubject(data) {
     const id = data.id;
@@ -45,7 +45,7 @@ function Subjects() {
     alert(result.error);
     return;
   }
-    loadClasses();
+    loadSubjects();
   }
   async function deleteSubject(id) {
     const ans = window.confirm(`do you want to delete that class`);
@@ -58,11 +58,11 @@ function Subjects() {
       alert(result.error);
       return;
     }
-    loadClasses();
+    loadSubjects();
   }
 
   useEffect(() => {
-    loadClasses();
+    loadSubjects();
   }, []);
   return (
     <div className="classes-page">

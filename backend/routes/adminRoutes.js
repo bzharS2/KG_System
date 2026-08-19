@@ -27,7 +27,8 @@ const { sortByRole,
     updateStatusController,
     sortByTeacher,
     sortByStaff,
-    sortByStudent
+    sortByStudent,
+    getTeachersController
 } = require('../controllers/adminController')
 
 
@@ -66,4 +67,5 @@ router.get('/user/sort/role/teacher', verification, checkRole("admin"), sortByTe
 router.get('/user/sort/role/staff', verification, checkRole("admin"), sortByStaff);
 router.get('/user/sort/role/student', verification, checkRole("admin"), sortByStudent);
 
+router.get('/teachers',verification,checkRole("admin"),getTeachersController)
 module.exports = router;

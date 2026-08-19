@@ -87,7 +87,7 @@ function Classes() {
 
         {showForm && (
           <CreateClassForm
-            level={null}
+            assignment={null}
             onSubmit={createC}
             onCancel={() => setShowForm(false)}
             subjects={false}

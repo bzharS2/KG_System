@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Assignments.css
+   Same ledger system as Users.css / Classes.css / AdminDashboard.css.
+   Each assignment is a filed record row with three labeled fields
+   (teacher / subject / class) plus update/delete actions.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+  --red-600: #b3432f;
+  --red-100: #f7e9e5;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.assignments-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.assignments-page__container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.assignments-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.assignments-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+/* -------------------------------------------------------------------- */
+/* Create button                                                         */
+/* -------------------------------------------------------------------- */
+
+.classes-create-btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--paper-050);
+  background: var(--ink-900);
+  border: none;
+  border-radius: 3px;
+  padding: 11px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-bottom: 28px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.classes-create-btn:hover {
+  background: var(--ink-700);
+}
+
+.classes-create-btn:active {
+  transform: translateY(1px);
+}
+
+.classes-create-btn:focus-visible {
+  outline: 2px solid var(--brass-500);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------- */
+/* List                                                                  */
+/* -------------------------------------------------------------------- */
+
+.assignments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.assignments-empty {
+  font-size: 14px;
+  color: var(--ink-500);
+  padding: 24px 0;
+}
+
+.assignment-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-left: 3px solid var(--brass-500);
+  border-radius: 4px;
+  padding: 16px 20px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.assignment-card:hover {
+  border-color: rgba(22, 34, 61, 0.2);
+  border-left-color: var(--brass-600);
+  box-shadow: 0 4px 14px -8px rgba(22, 34, 61, 0.25);
+}
+
+.assignment-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.assignment-card__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.assignment-card__value {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------- */
+/* Row actions (update / delete)                                        */
+/* -------------------------------------------------------------------- */
+
+.assignment-card__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  justify-self: end;
+}
+
+.assignment-card__update-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-900);
+  background: transparent;
+  border: 1px solid rgba(22, 34, 61, 0.18);
+  border-radius: 3px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.assignment-card__update-btn:hover {
+  background: var(--paper-100);
+  border-color: rgba(22, 34, 61, 0.32);
+}
+
+.assignment-card__delete-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red-600);
+  background: transparent;
+  border: 1px solid rgba(179, 67, 47, 0.3);
+  border-radius: 3px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.assignment-card__delete-btn:hover {
+  background: var(--red-100);
+  border-color: var(--red-600);
+}
+
+.assignment-card__update-btn:focus-visible,
+.assignment-card__delete-btn:focus-visible {
+  outline: 2px solid var(--brass-500);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .assignment-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .assignment-card__actions {
+    justify-self: start;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assignment-card,
+  .classes-create-btn,
+  .assignment-card__update-btn,
+  .assignment-card__delete-btn {
+    transition: none;
+  }
+}

@@ -181,6 +181,9 @@ const getTeacherAssignmentsController = async (req, res) => {
         const [result] = await db.query(`
             SELECT
                 assignment.id,
+                teacher.id AS teacher_id,
+                subject.id AS subject_id,
+                class.id AS class_id,
                 teacher.username AS teacher,
                 subject.name AS subject,
                 class.name AS class
@@ -202,8 +205,6 @@ const getTeacherAssignmentsController = async (req, res) => {
         return res.status(200).json(result);
 
     } catch (error) {
-        console.error(error);
-
         return res.status(500).json({
             error: "internal server error"
         });
@@ -281,7 +282,7 @@ const deleteTeacherAssignmentController = async (req, res) => {
         // i can't delete immediately if because the might be an evaluation with that id therefore we must check if evaluation exists first;
         const [check] = await db.query(`SELECT * FROM evaluations WHERE teaching_assignment_id=?`, [assignment_id]);
         if (check.length !== 0) {
-            return res.status(409).json({ error: `evaluation exists with that id therefore you can't delete` })
+            return res.status(409).json({ error: `An evaluation exists with that id therefore you can't delete` })
         }
         const [result] = await db.query(`DELETE FROM teaching_assignments WHERE id=?`, [assignment_id]);
         if (result.affectedRows === 0) {
@@ -558,6 +559,17 @@ async function sortUsers(column, value) {
         return false;
     }
 }
+const getTeachersController = async (req, res) => {
+    try {
+        const [result] = await db.query(`SELECT * FROM users WHERE role='teacher' AND status='active'`);
+        if (result.length === 0) {
+            return res.status(404).json({ error: `no active teachers found` });
+        }
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json({ error: `internal server error` });
+    }
+}
 
 module.exports = {
     sortByTeacher,
@@ -584,5 +596,6 @@ module.exports = {
     getSubjectsController,
     createSubjectsController,
     updateSubjectsController,
-    deleteSubjectController
+    deleteSubjectController,
+    getTeachersController
 };
