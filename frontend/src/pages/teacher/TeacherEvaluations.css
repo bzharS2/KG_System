@@ -1,0 +1,186 @@
+/* ==========================================================================
+   TeacherEvaluations.css
+   Same ledger system as the other pages. Each evaluation is a filed
+   record card with student + grade up top, subject as a subheading,
+   and the written opinion below. A dedicated empty state replaces the
+   list entirely when there's nothing to show yet.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+  --green-600: #3f7d5c;
+  --green-100: #e6f0ea;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.teacher-evals-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.teacher-evals-page__container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+
+.teacher-evals-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.teacher-evals-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+/* -------------------------------------------------------------------- */
+/* List                                                                  */
+/* -------------------------------------------------------------------- */
+
+.teacher-evals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.teacher-eval-card {
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 4px;
+  padding: 20px 22px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.teacher-eval-card:hover {
+  border-color: rgba(22, 34, 61, 0.2);
+  box-shadow: 0 6px 18px -12px rgba(22, 34, 61, 0.3);
+}
+
+.teacher-eval-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.teacher-eval-card__student {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+}
+
+.teacher-eval-card__grade {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-600);
+  background: var(--green-100);
+  border-radius: 3px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.teacher-eval-card__subject {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 12px;
+}
+
+.teacher-eval-card__opinion {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-700);
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------- */
+/* Empty state                                                           */
+/* -------------------------------------------------------------------- */
+
+.teacher-evals-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  background: var(--paper-050);
+  border: 1px dashed rgba(22, 34, 61, 0.2);
+  border-radius: 6px;
+  padding: 56px 32px;
+}
+
+.teacher-evals-empty__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--paper-100);
+  color: var(--brass-500);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.teacher-evals-empty__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+}
+
+.teacher-evals-empty__text {
+  font-size: 13.5px;
+  color: var(--ink-500);
+  max-width: 320px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .teacher-eval-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacher-eval-card {
+    transition: none;
+  }
+}

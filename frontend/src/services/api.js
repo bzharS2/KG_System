@@ -95,10 +95,10 @@ async function createTeacher(token, formData) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     }, body: JSON.stringify({
-      Username: formData.username,
-      Email: formData.email,
-      Password: formData.password,
-      DoB: formData.date_of_birth,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      dateOfBirth: formData.date_of_birth,
     })
   })
   const data = await response.json();
@@ -111,10 +111,10 @@ async function createStaff(token, formData) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     }, body: JSON.stringify({
-      Username: formData.username,
-      Email: formData.email,
-      Password: formData.password,
-      DoB: formData.date_of_birth,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      dateOfBirth: formData.date_of_birth,
     })
   })
   const data = await response.json();
@@ -332,6 +332,40 @@ async function getActiveStaff(token) {
   const data = await response.json();
   return data;
 }
+//teacher api
+async function getTeacherDashboard(token) {
+  const response = await fetch("http://localhost:5000/teacher/dashboard", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getStudents(token) {
+  const response = await fetch("http://localhost:5000/teacher/students", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getTeacherEvaluations(token) {
+  const response = await fetch("http://localhost:5000/teacher/evaluations", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
 export {
   login,
   getAdminDashboard,
@@ -358,5 +392,8 @@ export {
   getEvaluations,
   getActiveStaff,
   getActiveStudents,
-  getActiveTeacher
+  getActiveTeacher,
+  getTeacherDashboard,
+  getStudents,
+  getTeacherEvaluations
 }

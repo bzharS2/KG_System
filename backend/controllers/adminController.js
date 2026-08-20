@@ -510,18 +510,23 @@ const createTeacherController = async (req, res) => {
     });
 };
 async function createUser(username, email, password, dateOfBirth, role) {
-    if (username.trim() == "" ||
-        email.trim() == "" ||
-        password.trim() == "" ||
-        dateOfBirth.trim() == ""
-    ) {
-        return {
-            check: false,
-            text: "Invalid inputs"
-        };
-    }
+    if (
+    !username ||
+    !email ||
+    !password ||
+    !dateOfBirth ||
+    username.trim() === "" ||
+    email.trim() === "" ||
+    password.trim() === "" ||
+    dateOfBirth.trim() === ""
+) {
+    return {
+        check: false,
+        text: "Invalid inputs"
+    };
+}
     try {
-        const [result] = await db.query('SELECT * FROM users WHERE email=?', [email.trim()])
+        const [result] = await db.query('SELECT * FROM users WHERE email=?', [email.trim().toLowerCase()])
         if (result.length > 0) {
             return {
                 check: false,
@@ -546,9 +551,10 @@ async function createUser(username, email, password, dateOfBirth, role) {
 
 
     } catch (error) {
+        console.error(error);
         return {
             check: false,
-            text: "internal sever error"
+            text: `internal server error`
         };
 
 

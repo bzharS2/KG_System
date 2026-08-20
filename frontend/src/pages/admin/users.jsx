@@ -63,6 +63,7 @@ function Users() {
       const result = await createStudent(token, fromData);
     } else if (fromData.role == "teacher") {
       const result = await createTeacher(token, fromData);
+      console.log(result)
     } else {
       const result = await createStaff(token, fromData);
     }

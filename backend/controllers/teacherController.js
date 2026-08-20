@@ -9,9 +9,9 @@ const getTeacherDashboardController = async (req, res) => {
     try {
         const [result] = await db.query(
             `SELECT
-        teacher.username,
-        teacher.email,
-        teacher.date_of_birth,
+        teacher.username AS username,
+        teacher.email AS email,
+        teacher.date_of_birth AS date_of_birth,
         subjects.name AS subject,
         classes.name AS class
      FROM users AS teacher
@@ -28,7 +28,7 @@ const getTeacherDashboardController = async (req, res) => {
         if (result.length == 0) {
             return res.status(400).json({ error: `no personal info` })
         }
-        return res.status(200).json(result);
+        return res.status(200).json(result[0]);
     } catch (error) {
         return res.status(500).json({ error: `internal sever error` })
     }
@@ -203,9 +203,8 @@ const getTeacherEvaluationsController = async (req, res) => {
         );
 
         if (result.length === 0) {
-            return res.status(404).json({
-                error: "no evaluations found"
-            });
+            // it will be empty since the teacher hasn't made any evaluations yet
+            return res.status(200).json(result);
         }
 
         return res.status(200).json(result);

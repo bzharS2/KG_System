@@ -1,0 +1,171 @@
+/* ==========================================================================
+   Students.css
+   Same ledger system as the admin/teacher pages. Each student is a
+   filed record row: initial-letter avatar, name/email, then
+   date of birth and class as small meta tags on the right.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+  --blue-600: #3a5a9c;
+  --blue-100: #e8edf7;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.students-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.students-page__container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+
+.students-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.students-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+/* -------------------------------------------------------------------- */
+/* List                                                                  */
+/* -------------------------------------------------------------------- */
+
+.students-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.students-empty {
+  font-size: 14px;
+  color: var(--ink-500);
+  padding: 24px 0;
+}
+
+.student-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 4px;
+  padding: 14px 18px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.student-card:hover {
+  border-color: rgba(22, 34, 61, 0.2);
+  box-shadow: 0 4px 14px -8px rgba(22, 34, 61, 0.25);
+}
+
+.student-card__avatar {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--ink-900);
+  color: var(--paper-050);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-card__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.student-card__name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 2px;
+}
+
+.student-card__email {
+  font-size: 13px;
+  color: var(--ink-500);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.student-card__dob {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.student-card__class {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue-600);
+  background: var(--blue-100);
+  border-radius: 3px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 520px) {
+  .student-card {
+    flex-wrap: wrap;
+  }
+
+  .student-card__meta {
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 58px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-card {
+    transition: none;
+  }
+}

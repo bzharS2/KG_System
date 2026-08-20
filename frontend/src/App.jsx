@@ -7,7 +7,9 @@ import Classes from "./pages/admin/classes";
 import Subjects from "./pages/admin/subjects";
 import Assignments from "./pages/admin/assignments";
 import Evaluations from "./pages/admin/Evaluations";
-
+import TeacherDashboard from "./pages/teacher/TeacherDashboard";
+import Students from "./pages/teacher/students";
+import TeacherEvaluations from "./pages/teacher/teacherEvaluations";
 function App() {
   var shit;
   return (
@@ -25,9 +27,9 @@ function App() {
         <Route path="/admin/evaluations" element={<Evaluations />} />
 
         {/* Teacher */}
-        <Route path="/teacher/dashboard" element={<h1>Teacher Dashboard</h1>} />
-        <Route path="/teacher/students" element={<h1>Students</h1>} />
-        <Route path="/teacher/evaluations" element={<h1>Evaluations</h1>} />
+        <Route path="/teacher/dashboard" element={<TeacherDashboard/>} />
+        <Route path="/teacher/students" element={<Students/>} />
+        <Route path="/teacher/evaluations" element={<TeacherEvaluations/>} />
 
         {/* Student */}
         <Route path="/student/dashboard" element={<h1>Student Dashboard</h1>} />
