@@ -6,6 +6,7 @@ import Users from "./pages/admin/users";
 import Classes from "./pages/admin/classes";
 import Subjects from "./pages/admin/subjects";
 import Assignments from "./pages/admin/assignments";
+import Evaluations from "./pages/admin/Evaluations";
 
 function App() {
   var shit;
@@ -18,12 +19,10 @@ function App() {
         {/* Admin */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<Users />} />
-        <Route path="/admin/classes" element={<Classes/>} />
-        <Route path="/admin/subjects" element={<Subjects/>} />
-        <Route
-          path="/admin/assignments"
-          element={< Assignments/>}
-        />
+        <Route path="/admin/classes" element={<Classes />} />
+        <Route path="/admin/subjects" element={<Subjects />} />
+        <Route path="/admin/assignments" element={<Assignments />} />
+        <Route path="/admin/evaluations" element={<Evaluations />} />
 
         {/* Teacher */}
         <Route path="/teacher/dashboard" element={<h1>Teacher Dashboard</h1>} />

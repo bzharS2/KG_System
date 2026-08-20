@@ -13,6 +13,67 @@ const getStatisticController = async (req, res) => {
         return res.status(500).json({ error: `internal server error` })
     }
 }
+
+const getActiveStudentsController = async (req, res) => {
+    try {
+        const [result] = await db.query(`
+            SELECT COUNT(*) AS count
+            FROM users
+            WHERE role = 'student'
+            AND status = 'active'
+        `);
+
+        return res.status(200).json(result[0]);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
+
+
+const getActiveTeachersController = async (req, res) => {
+    try {
+        const [result] = await db.query(`
+            SELECT COUNT(*) AS count
+            FROM users
+            WHERE role = 'teacher'
+            AND status = 'active'
+        `);
+
+        return res.status(200).json(result[0]);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
+
+
+const getActiveStaffController = async (req, res) => {
+    try {
+        const [result] = await db.query(`
+            SELECT COUNT(*) AS count
+            FROM users
+            WHERE role = 'staff'
+            AND status = 'active'
+        `);
+
+        return res.status(200).json(result[0]);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
+
+
 const getUsersController = async (req, res) => {
     try {
         const [result] = await db.query('SELECT id,username,email,role,date_of_birth,status FROM users');
@@ -252,7 +313,10 @@ const updateTeacherAssignmentController = async (req, res) => {
         const [classes] = await db.query(`SELECT * FROM classes WHERE id =?`, [class_id]);
         const [assignment] = await db.query(`SELECT * FROM teaching_assignments WHERE id=?`, [assignment_id]);
         const [check] = await db.query(`SELECT * FROM teaching_assignments WHERE teacher_id=? AND subject_id=? AND class_id=? AND id != ?`, [teacher_id, subject_id, class_id, assignment_id]);
-
+        const [checkEvaluation] = await db.query(`SELECT * FROM evaluations WHERE teaching_assignment_id=?`, [assignment_id]);
+        if (checkEvaluation.length !== 0) {
+            return res.status(409).json({ error: `An evaluation exists with that assignment therefore you can't update` })
+        }
 
         if (teachers.length === 0) {
             return res.status(404).json({ error: `Teacher doesn't exist` });
@@ -571,6 +635,59 @@ const getTeachersController = async (req, res) => {
     }
 }
 
+const getEvaluationsController = async (req, res) => {
+    try {
+        const [result] = await db.query(`
+            SELECT 
+                evaluation.grade,
+                evaluation.id,
+                evaluation.opinion,
+                evaluation.updated_at,
+
+                assignment.id AS assignment_id,
+
+                teacher.id AS teacher_id,
+                teacher.username AS teacher,
+
+                student.id AS student_id,
+                student.username AS student,
+
+                subject.id AS subject_id,
+                subject.name AS subject,
+
+                class.id AS class_id,
+                class.name AS class
+
+            FROM evaluations AS evaluation
+
+            JOIN teaching_assignments AS assignment
+                ON assignment.id = evaluation.teaching_assignment_id
+
+            JOIN users AS teacher
+                ON teacher.id = assignment.teacher_id
+
+            JOIN users AS student
+                ON student.id = evaluation.student_id
+
+            JOIN subjects AS subject
+                ON subject.id = assignment.subject_id
+
+            JOIN classes AS class
+                ON class.id = assignment.class_id
+
+            ORDER BY evaluation.updated_at DESC
+        `);
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            error: error
+        });
+    }
+};
 module.exports = {
     sortByTeacher,
     sortByStaff,
@@ -597,5 +714,9 @@ module.exports = {
     createSubjectsController,
     updateSubjectsController,
     deleteSubjectController,
-    getTeachersController
+    getTeachersController,
+    getEvaluationsController,
+    getActiveStaffController,
+    getActiveStudentsController,
+    getActiveTeachersController
 };

@@ -1,0 +1,190 @@
+/* ==========================================================================
+   Evaluations.css
+   Same ledger system as Users.css / Classes.css / Assignments.css.
+   Each evaluation is a filed record card: title + date up top, a
+   labeled field grid (student/teacher/subject/class), then a
+   description block for the written opinion.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.evaluations-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.evaluations-page__container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.evaluations-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.evaluations-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+/* -------------------------------------------------------------------- */
+/* List                                                                  */
+/* -------------------------------------------------------------------- */
+
+.evaluations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.evaluations-empty {
+  font-size: 14px;
+  color: var(--ink-500);
+  padding: 24px 0;
+}
+
+.evaluation-card {
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 4px;
+  padding: 20px 22px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.evaluation-card:hover {
+  border-color: rgba(22, 34, 61, 0.2);
+  box-shadow: 0 6px 18px -12px rgba(22, 34, 61, 0.3);
+}
+
+/* header: title + date */
+
+.evaluation-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(22, 34, 61, 0.14);
+}
+
+.evaluation-card__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0;
+}
+
+.evaluation-card__date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brass-600);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* field grid: student / teacher / subject / class */
+
+.evaluation-card__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.evaluation-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.evaluation-card__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.evaluation-card__value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* description */
+
+.evaluation-card__description {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--paper-100);
+  border-radius: 3px;
+  padding: 12px 14px;
+}
+
+.evaluation-card__opinion {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-700);
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 680px) {
+  .evaluation-card__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .evaluation-card__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .evaluation-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evaluation-card {
+    transition: none;
+  }
+}

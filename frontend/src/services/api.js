@@ -288,6 +288,50 @@ async function updateAssignment(token, formData, id) {
   const data = await response.json();
   return data;
 }
+async function getEvaluations(token) {
+  const response = await fetch("http://localhost:5000/admin/evaluations", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getActiveStudents(token) {
+  const response = await fetch("http://localhost:5000/admin/statistics/active-students", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getActiveTeacher(token) {
+  const response = await fetch("http://localhost:5000/admin/statistics/active-teachers", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getActiveStaff(token) {
+  const response = await fetch("http://localhost:5000/admin/statistics/active-staff", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
 export {
   login,
   getAdminDashboard,
@@ -310,5 +354,9 @@ export {
   getTeachers,
   createAssignment,
   deleteAssignment,
-  updateAssignment
+  updateAssignment,
+  getEvaluations,
+  getActiveStaff,
+  getActiveStudents,
+  getActiveTeacher
 }

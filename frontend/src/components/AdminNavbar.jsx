@@ -8,6 +8,7 @@ export default function AdminNavbar() {
     { to: "/admin/classes", label: "Classes" },
     { to: "/admin/subjects", label: "Subjects" },
     { to: "/admin/assignments", label: "Assignments" },
+    { to: "/admin/evaluations", label: "Evaluations" },
   ];
 
   return (
