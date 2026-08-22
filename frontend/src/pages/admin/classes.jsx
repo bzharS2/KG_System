@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import {
   Link,
@@ -19,6 +20,7 @@ import CreateClassForm from "../../components/CreateClassForm";
 import "./Classes.css";
 
 function Classes() {
+  const navigate=useNavigate();
   const [classes, setClasses] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [fromUpdate, setFromUpdate] = useState(false);
@@ -59,6 +61,9 @@ function Classes() {
 
   async function loadClasses() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/')
+    }
     const result = await getClasses(token);
     setClasses(result);
   }

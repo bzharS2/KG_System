@@ -156,9 +156,17 @@
 
 .evaluation-card__opinion {
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--ink-700);
-  margin: 0;
+  margin: 0 0 16px;
+  max-height: 8.5em; /* ~5 lines */
+  overflow-y: auto;
+  padding-right: 6px;
+  background: var(--paper-100);
+  border-radius: 3px;
+  padding: 12px 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* -------------------------------------------------------------------- */

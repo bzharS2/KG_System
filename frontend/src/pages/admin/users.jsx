@@ -25,6 +25,7 @@ import {
 import "./Users.css";
 
 function Users() {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [classes, setClasses] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -38,6 +39,9 @@ function Users() {
   }
   async function loadClasses() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/login");
+    }
     const result = await getClasses(token);
     setClasses(result);
   }
@@ -63,7 +67,7 @@ function Users() {
       const result = await createStudent(token, fromData);
     } else if (fromData.role == "teacher") {
       const result = await createTeacher(token, fromData);
-      console.log(result)
+      console.log(result);
     } else {
       const result = await createStaff(token, fromData);
     }

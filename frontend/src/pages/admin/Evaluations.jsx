@@ -1,14 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import AdminNavbar from "../../components/AdminNavbar";
 import { getEvaluations } from "../../services/api";
 import "./Evaluations.css";
-
+import { useNavigate } from "react-router-dom";
 function Evaluations() {
   const [evaluations, setEvaluations] = useState([]);
+  const navigate = useNavigate();
 
   async function loadEvaluations(params) {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate('/')
+    }
     const result = await getEvaluations(token);
     if (result.error) {
       alert(result.error);

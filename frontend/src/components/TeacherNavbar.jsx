@@ -1,7 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./AdminNavbar.css";
 
 export default function TeacherNavbar() {
+  const navigate = useNavigate();
+
+  function logout() {
+    localStorage.removeItem("token");
+    navigate("/");
+  }
   const links = [
     { to: "/teacher/dashboard", label: "Dashboard" },
     { to: "/teacher/students", label: "Students" },
@@ -23,6 +29,9 @@ export default function TeacherNavbar() {
             {label}
           </NavLink>
         ))}
+        <button className="admin-nav__logout" onClick={logout}>
+          Logout
+        </button>{" "}
       </div>
     </nav>
   );

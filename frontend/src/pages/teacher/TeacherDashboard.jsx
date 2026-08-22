@@ -1,14 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { getTeacherDashboard } from "../../services/api";
 import "./TeacherDashboard.css";
 import TeacherNavbar from "../../components/TeacherNavbar";
+import { useNavigate } from "react-router-dom";
 
 function TeacherDashboard() {
   const [data, setData] = useState(null);
+  const navigate=useNavigate();
+
   async function loadDashboard() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await getTeacherDashboard(token);
     setData(result);
   }

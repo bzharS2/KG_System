@@ -19,6 +19,7 @@ import AdminNavbar from "../../components/AdminNavbar";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [activeStudents, setActiveStudents] = useState(null);
   const [activeTeachers, setActiveTeachers] = useState(null);
@@ -26,21 +27,23 @@ function AdminDashboard() {
   async function loadStudent(params) {
     const token = localStorage.getItem("token");
     const result = await getActiveStudents(token);
-    setActiveStudents(result)
+    setActiveStudents(result);
   }
-   async function loadTeacher(params) {
+  async function loadTeacher(params) {
     const token = localStorage.getItem("token");
     const result = await getActiveTeacher(token);
-    setActiveTeachers(result)
+    setActiveTeachers(result);
   }
-   async function loadStaff(params) {
+  async function loadStaff(params) {
     const token = localStorage.getItem("token");
     const result = await getActiveStaff(token);
-    setActiveStaff(result)
+    setActiveStaff(result);
   }
   async function loadDashboard() {
-    const token = localStorage.getItem("token");
-
+    const token = await localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await getAdminDashboard(token);
 
     setData(result);

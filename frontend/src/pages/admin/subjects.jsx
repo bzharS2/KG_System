@@ -20,11 +20,16 @@ import CreateClassForm from "../../components/CreateClassForm";
 
 function Subjects() {
   const [subjects, setSubjects] = useState([]);
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [fromUpdate, setFromUpdate] = useState(false);
   const [subject, setSubject] = useState(null);
+
   async function loadSubjects() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await getSubjects(token);
     setSubjects(result);
   }
@@ -41,10 +46,10 @@ function Subjects() {
     const id = data.id;
     const token = localStorage.getItem("token");
     const result = await updateSubjects(token, data, id);
-     if (result.error) {
-    alert(result.error);
-    return;
-  }
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
     loadSubjects();
   }
   async function deleteSubject(id) {

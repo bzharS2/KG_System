@@ -26,8 +26,6 @@ function LoginPage() {
       const data = await login(email, password);
       if (data.token) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.id);
-        localStorage.setItem("role", data.role);
       }
       if (data.role == "admin") {
         return navigate("/admin/dashboard");
@@ -42,6 +40,7 @@ function LoginPage() {
       setIsSubmitting(false);
     }
   }
+
 
   return (
     <div className="login-page">

@@ -13,8 +13,12 @@ import {
 import "./TeacherEvaluations.css";
 import TeacherNavbar from "../../components/TeacherNavbar";
 import CreateEvaluation from "../../components/CreateEvaluation";
+import { useNavigate } from "react-router-dom";
+
 
 function TeacherEvaluations() {
+    const navigate=useNavigate();
+
   const [evaluations, setEvaluations] = useState([]);
   const [showForm, setShowForm] = useState(false);
   // const [levels, setLevels] = useState([]);
@@ -24,7 +28,12 @@ function TeacherEvaluations() {
   const [single, setSingle] = useState(null);
 
   async function loadEvaluations() {
+    
     const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/')
+    }
+
     const result = await getTeacherEvaluations(token);
     setEvaluations(result);
   }
@@ -43,6 +52,7 @@ function TeacherEvaluations() {
     const result = await getStudents(token);
     setStudents(result);
   }
+
   async function create(data) {
     const token = localStorage.getItem("token");
     const result = await createEvaluation(token, data);
@@ -61,7 +71,9 @@ function TeacherEvaluations() {
     loadEvaluations();
   }
   async function remove(data) {
- const ans=   window.confirm(`are you sure you want to delete ${data.student}`)
+    const ans = window.confirm(
+      `are you sure you want to delete ${data.student}`,
+    );
     if (!ans) {
       return;
     }

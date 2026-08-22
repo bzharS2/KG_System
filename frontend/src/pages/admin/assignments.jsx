@@ -23,6 +23,8 @@ import AssignmentForm from "../../components/AssignmentForm";
 import "./Assignments.css";
 
 function Assignments() {
+    const navigate=useNavigate();
+
   const [assignments, setAssignments] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -68,6 +70,9 @@ function Assignments() {
   }
   async function loadAssignments() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return  navigate('/')
+    }
     const result = await getAssignments(token);
     setAssignments(result);
   }
