@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./AdminNavbar.css";
+import { useState } from "react";
 
-export default function AdminNavbar() {
+export default function StudentNavbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -11,15 +11,14 @@ export default function AdminNavbar() {
     navigate("/");
   }
   const links = [
-    { to: "/teacher/dashboard", label: "Dashboard" },
-    { to: "/teacher/students", label: "students" },
-    { to: "/teacher/evaluations", label: "Evaluations" },
+    { to: "/student/dashboard", label: "Dashboard" },
+    { to: "/student/subjects", label: "Subjects" },
+    { to: "/student/evaluations", label: "Evaluations" },
   ];
 
   return (
     <nav className="admin-nav">
-      <div className="admin-nav__mark">ADMIN</div>
-
+      <div className="admin-nav__mark">Student</div>
       <div className="admin-nav__links">
         {links.map(({ to, label }) => (
           <NavLink
@@ -33,11 +32,10 @@ export default function AdminNavbar() {
           </NavLink>
         ))}
       </div>
-
       <button className="admin-nav__logout" onClick={logout}>
         Logout
       </button>
-
+      
       <button
         className="admin-nav__toggle"
         onClick={() => setMenuOpen((open) => !open)}
@@ -48,7 +46,6 @@ export default function AdminNavbar() {
         <span className="admin-nav__toggle-line" />
         <span className="admin-nav__toggle-line" />
       </button>
-
       {menuOpen && (
         <div className="admin-nav__dropdown">
           {links.map(({ to, label }) => (

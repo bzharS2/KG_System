@@ -6,32 +6,53 @@ const express = require("express");
 
 
 const getTeacherDashboardController = async (req, res) => {
-    try {
-        const [result] = await db.query(
-            `SELECT
-        teacher.username AS username,
-        teacher.email AS email,
-        teacher.date_of_birth AS date_of_birth,
-        subjects.name AS subject,
-        classes.name AS class
-     FROM users AS teacher
-     JOIN teaching_assignments AS assignment
-         ON assignment.teacher_id = teacher.id
-     JOIN subjects
-         ON subjects.id = assignment.subject_id
-     JOIN classes
-         ON classes.id = assignment.class_id
-     WHERE teacher.id = ?
-       AND teacher.role = 'teacher'`,
-            [req.user.id]
-        );
-        if (result.length == 0) {
-            return res.status(400).json({ error: `no personal info` })
+try {
+        const [result] = await db.query(`
+            SELECT 
+                teacher.username,
+                teacher.email,
+                teacher.date_of_birth,
+                assignment.id AS assignment_id,
+                subjects.name AS subject,
+                classes.name AS class
+            FROM users AS teacher
+            JOIN teaching_assignments AS assignment
+                ON assignment.teacher_id = teacher.id
+            JOIN subjects
+                ON subjects.id = assignment.subject_id
+            JOIN classes
+                ON classes.id = assignment.class_id
+            WHERE teacher.id = ?
+              AND teacher.role = 'teacher'
+        `, [req.user.id]);
+
+        if (result.length === 0) {
+            return res.status(404).json({
+                error: "no personal info"
+            });
         }
-        return res.status(200).json(result[0]);
+
+        const teacher = {
+            username: result[0].username,
+            email: result[0].email,
+            date_of_birth: result[0].date_of_birth,
+            assignments: result.map(row => ({
+                 id: row.assignment_id,
+                subject: row.subject,
+                class: row.class
+            }))
+        };
+
+        return res.status(200).json(teacher);
+
     } catch (error) {
-        return res.status(500).json({ error: `internal sever error` })
+        console.error(error);
+
+        return res.status(500).json({
+            error: "internal server error"
+        });
     }
+
 };
 const getStudentController = async (req, res) => {
     try {

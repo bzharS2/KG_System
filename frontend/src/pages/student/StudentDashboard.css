@@ -1,0 +1,166 @@
+/* ==========================================================================
+   StudentDashboard.css
+   Same ledger system as the admin/teacher pages, adapted into a single
+   profile card: initial-letter avatar, name/email up top, then a
+   labeled field grid for date of birth and class.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap");
+
+:root {
+  --ink-900: #16223d;
+  --ink-700: #29385c;
+  --ink-500: #5b6b8c;
+  --paper-100: #f7f5ef;
+  --paper-050: #fdfcf9;
+  --brass-500: #b8892b;
+  --brass-600: #966d1f;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.student-dashboard-page {
+  min-height: 100vh;
+  background: var(--paper-100);
+  font-family: var(--font-body);
+}
+
+.student-dashboard-page__container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+
+.student-dashboard-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+  margin: 0 0 6px;
+}
+
+.student-dashboard-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(22, 34, 61, 0.12);
+}
+
+.student-dashboard-loading {
+  font-size: 14px;
+  color: var(--ink-500);
+  padding: 24px 0;
+}
+
+/* -------------------------------------------------------------------- */
+/* Profile card                                                          */
+/* -------------------------------------------------------------------- */
+
+.student-profile-card {
+  display: flex;
+  gap: 20px;
+  background: var(--paper-050);
+  border: 1px solid rgba(22, 34, 61, 0.1);
+  border-radius: 6px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.student-profile-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--brass-500), var(--brass-600));
+}
+
+.student-profile-card__avatar {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--ink-900);
+  color: var(--paper-050);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-profile-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.student-profile-card__name {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin: 0 0 2px;
+}
+
+.student-profile-card__email {
+  font-size: 13.5px;
+  color: var(--ink-500);
+  margin: 0 0 20px;
+}
+
+.student-profile-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(22, 34, 61, 0.14);
+}
+
+.student-profile-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.student-profile-card__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.student-profile-card__value {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .student-profile-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .student-profile-card__grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}

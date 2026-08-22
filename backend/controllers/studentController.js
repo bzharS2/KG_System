@@ -19,6 +19,7 @@ const getSubjectsController = async (req, res) => {
     try {
         const [result] = await db.query(
             `SELECT
+            subjects.id AS id,
                 subjects.name AS subject,
                 teacher.username AS teacher
              FROM users AS student
@@ -50,19 +51,44 @@ const getSubjectsController = async (req, res) => {
 
 const getEvaluationController = async (req, res) => {
     try {
-        const [result] = await db.query('SELECT grade,opinion FROM evaluations WHERE student_id=?', [req.user.id]);
-        if (result.length === 0) {
-            return res.status(404).json({
-                error: 'no grades or opinion yet'
-            });
-        }
-        return res.status(200).json(result[0]);
+        const [result] = await db.query(`
+            SELECT
+                evaluation.id,
+                evaluation.grade,
+                evaluation.opinion,
+
+                teacher.id AS teacher_id,
+                teacher.username AS teacher,
+
+                subject.id AS subject_id,
+                subject.name AS subject
+
+            FROM evaluations AS evaluation
+
+            JOIN teaching_assignments AS assignment
+                ON assignment.id = evaluation.teaching_assignment_id
+
+            JOIN users AS teacher
+                ON teacher.id = assignment.teacher_id
+
+            JOIN subjects AS subject
+                ON subject.id = assignment.subject_id
+
+            WHERE evaluation.student_id = ?
+
+            ORDER BY evaluation.updated_at DESC
+        `, [req.user.id]);
+
+        return res.status(200).json(result);
+
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
-            error: 'internal server error'
+            error: "internal server error"
         });
     }
-}
+};
 const getSpecificEvaluationController = async (req, res) => {
     const evaluation_id = req.params.id;
     try {

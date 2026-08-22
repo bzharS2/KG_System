@@ -432,6 +432,40 @@ async function deleteEvaluations(token, id) {
   const data = await response.json();
   return data;
 }
+async function getStudentDashboard(token) {
+  const response = await fetch("http://localhost:5000/student/dashboard", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getStudentSubjects(token) {
+  const response = await fetch("http://localhost:5000/student/subjects", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getStudentEvaluation(token) {
+    const response = await fetch("http://localhost:5000/student/evaluations", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+
 export {
   login,
   getAdminDashboard,
@@ -466,5 +500,8 @@ export {
   getTeacherSubjects,
   createEvaluation,
   updateEvaluations,
-  deleteEvaluations
+  deleteEvaluations,
+  getStudentDashboard,
+  getStudentSubjects,
+  getStudentEvaluation
 }

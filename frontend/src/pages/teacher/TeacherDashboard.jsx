@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function TeacherDashboard() {
   const [data, setData] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   async function loadDashboard() {
     const token = localStorage.getItem("token");
@@ -17,6 +17,7 @@ function TeacherDashboard() {
       return navigate("/");
     }
     const result = await getTeacherDashboard(token);
+    console.log(result);
     setData(result);
   }
   useEffect(() => {
@@ -52,13 +53,17 @@ function TeacherDashboard() {
                 <div className="teacher-profile-card__field">
                   <span className="teacher-profile-card__label">Subject</span>
                   <span className="teacher-profile-card__value">
-                    {data.subject}
+                    {data.assignments.map((data) => (
+                      <p key={data.id}>{data.subject}</p>
+                    ))}
                   </span>
                 </div>
                 <div className="teacher-profile-card__field">
                   <span className="teacher-profile-card__label">Class</span>
                   <span className="teacher-profile-card__value">
-                    {data.class}
+                    {data.assignments.map((data) => (
+                      <p key={data.id}>{data.class}</p>
+                    ))}{" "}
                   </span>
                 </div>
               </div>
