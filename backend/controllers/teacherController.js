@@ -32,7 +32,7 @@ const getTeacherDashboardController = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: `internal sever error` })
     }
-}
+};
 const getStudentController = async (req, res) => {
     try {
         const [result] = await db.query(
@@ -59,10 +59,10 @@ const getStudentController = async (req, res) => {
         }
         return res.status(200).json(result);
     } catch (error) {
-        return res.status(500).json({ error:error })
+        return res.status(500).json({ error: error })
 
     }
-}
+};
 const createStudentEvaluation = async (req, res) => {
     const { student_id, subject_id, grade, opinion } = req.body;
 
@@ -180,7 +180,7 @@ const createStudentEvaluation = async (req, res) => {
             error: "internal server error"
         });
     }
-}
+};
 const getTeacherEvaluationsController = async (req, res) => {
     try {
         const [result] = await db.query(
@@ -189,6 +189,7 @@ const getTeacherEvaluationsController = async (req, res) => {
                 student.id AS student_id,
                 student.username AS student,
                 subject.name AS subject,
+                subject.id AS subject_id,
                 evaluation.grade,
                 evaluation.opinion
              FROM evaluations AS evaluation
@@ -273,12 +274,85 @@ const updateStudentEvaluations = async (req, res) => {
             error: "internal server error"
         });
     }
-}
+};
+const getTeacherClassesController = async (req, res) => {
+    const teacherId = req.user.id;
+
+    try {
+        const [result] = await db.query(`
+            SELECT DISTINCT
+                class.id,
+                class.name
+            FROM teaching_assignments AS assignment
+            JOIN classes AS class
+                ON class.id = assignment.class_id
+            WHERE assignment.teacher_id = ?
+            ORDER BY class.name ASC
+        `, [teacherId]);
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
+
+const getTeacherSubjectsController = async (req, res) => {
+    const teacherId = req.user.id;
+
+    try {
+        const [result] = await db.query(`
+            SELECT DISTINCT
+                subject.id,
+                subject.name
+            FROM teaching_assignments AS assignment
+            JOIN subjects AS subject
+                ON subject.id = assignment.subject_id
+            WHERE assignment.teacher_id = ?
+            ORDER BY subject.name ASC
+        `, [teacherId]);
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
+const deleteStudentEvaluationsController = async (req, res) => {
+    const evaluation_id = req.params.id;
+    try {
+        const [result] = await db.query('DELETE FROM evaluations WHERE id = ?', [evaluation_id]);
+        if (result.affectedRows === 0) {
+            return res.status(400).json({
+                error: "evaluation doesn't exist"
+            });
+        }
+
+        return res.status(200).json({
+            message: "evaluation deleted successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: error
+        });
+    }
+};
 
 module.exports = {
     getTeacherDashboardController,
     getStudentController,
     createStudentEvaluation,
     getTeacherEvaluationsController,
-    updateStudentEvaluations
+    updateStudentEvaluations,
+    getTeacherClassesController,
+    getTeacherSubjectsController,
+    deleteStudentEvaluationsController
 };

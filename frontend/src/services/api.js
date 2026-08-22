@@ -281,8 +281,8 @@ async function updateAssignment(token, formData, id) {
       Authorization: `Bearer ${token}`
     }, body: JSON.stringify({
       teacher_id: formData.teacher_id,
-      subject_id:formData.subject_id,
-      class_id:formData.class_id
+      subject_id: formData.subject_id,
+      class_id: formData.class_id
     })
   })
   const data = await response.json();
@@ -366,6 +366,72 @@ async function getTeacherEvaluations(token) {
   const data = await response.json();
   return data;
 }
+
+async function getTeacherSubjects(token) {
+  const response = await fetch("http://localhost:5000/teacher/subjects", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getTeacherClasses(token) {
+  const response = await fetch("http://localhost:5000/teacher/classes", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+
+async function createEvaluation(token, values) {
+  const response = await fetch("http://localhost:5000/teacher/evaluations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+
+      student_id: values.student_id,
+      subject_id: values.subject_id,
+      grade: values.grade,
+      opinion: values.opinion
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function updateEvaluations(token, formData, id) {
+  const response = await fetch(`http://localhost:5000/teacher/evaluations/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }, body: JSON.stringify({
+      grade: formData.grade,
+      opinion: formData.opinion
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+async function deleteEvaluations(token, id) {
+  const response = await fetch(`http://localhost:5000/teacher/evaluations/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  })
+  const data = await response.json();
+  return data;
+}
 export {
   login,
   getAdminDashboard,
@@ -395,5 +461,10 @@ export {
   getActiveTeacher,
   getTeacherDashboard,
   getStudents,
-  getTeacherEvaluations
+  getTeacherEvaluations,
+  getTeacherClasses,
+  getTeacherSubjects,
+  createEvaluation,
+  updateEvaluations,
+  deleteEvaluations
 }

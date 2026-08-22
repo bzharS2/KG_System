@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getTeacherDashboard } from "../../services/api";
 import "./TeacherDashboard.css";
+import TeacherNavbar from "../../components/TeacherNavbar";
 
 function TeacherDashboard() {
   const [data, setData] = useState(null);
@@ -16,6 +17,8 @@ function TeacherDashboard() {
   }, []);
   return (
     <div className="teacher-dashboard-page">
+      <TeacherNavbar />
+
       <div className="teacher-dashboard-page__container">
         <p className="teacher-dashboard-eyebrow">Teacher / Overview</p>
         <h1 className="teacher-dashboard-title">My Dashboard</h1>
@@ -27,9 +30,7 @@ function TeacherDashboard() {
             </div>
 
             <div className="teacher-profile-card__body">
-              <h2 className="teacher-profile-card__name">
-                {data.username}
-              </h2>
+              <h2 className="teacher-profile-card__name">{data.username}</h2>
               <p className="teacher-profile-card__email">{data.email}</p>
 
               <div className="teacher-profile-card__grid">
@@ -42,17 +43,13 @@ function TeacherDashboard() {
                   </span>
                 </div>
                 <div className="teacher-profile-card__field">
-                  <span className="teacher-profile-card__label">
-                    Subject
-                  </span>
+                  <span className="teacher-profile-card__label">Subject</span>
                   <span className="teacher-profile-card__value">
                     {data.subject}
                   </span>
                 </div>
                 <div className="teacher-profile-card__field">
-                  <span className="teacher-profile-card__label">
-                    Class
-                  </span>
+                  <span className="teacher-profile-card__label">Class</span>
                   <span className="teacher-profile-card__value">
                     {data.class}
                   </span>

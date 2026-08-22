@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getStudents } from "../../services/api";
 import "./Students.css";
+import TeacherNavbar from "../../components/TeacherNavbar";
 
 function Students() {
   const [kids, setKids] = useState([]);
@@ -15,8 +16,9 @@ function Students() {
     loadStudents();
   }, []);
   return (
-    
     <div className="students-page">
+      <TeacherNavbar />
+
       <div className="students-page__container">
         <p className="students-eyebrow">Teacher / Directory</p>
         <h1 className="students-title">Your Students</h1>

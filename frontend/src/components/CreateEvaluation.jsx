@@ -2,24 +2,33 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import "./UserForm.css";
-function EvaluationForm({ evaluation, classes, subjects, onSubmit, onCancel }) {
-  const [classId, setClassId] = useState("");
+function EvaluationForm({
+  evaluation,
+  students,
+  subjects,
+  onSubmit,
+  onCancel,
+}) {
+ // const [classId, setClassId] = useState("");
   const [subjectsId, setSubjectsId] = useState("");
-  const [grade, setGrade] = useState(null);
-  const [opinion, setOpinion] = useState(null);
+  const [grade, setGrade] = useState("");
+  const [opinion, setOpinion] = useState(0);
+  const [studentId, setStudentId] = useState("");
 
   // If user exists, we're editing
   useEffect(() => {
     if (evaluation) {
       setSubjectsId(evaluation.subject_id || "");
-      setClassId(evaluation.class_id || "");
+      // setClassId(evaluation.class_id || "");
       setGrade(evaluation.grade || "");
       setOpinion(evaluation.opinion || "");
+      setStudentId(evaluation.student_id || "");
     } else {
       setSubjectsId("");
-      setClassId("");
+      // setClassId("");
       setGrade("");
       setOpinion("");
+      setStudentId("");
     }
   }, [evaluation]);
 
@@ -29,9 +38,9 @@ function EvaluationForm({ evaluation, classes, subjects, onSubmit, onCancel }) {
     const formData = {
       id: evaluation?.id,
       subject_id: subjectsId,
-      class_id: classId,
-      grade:grade,
-      opinion:opinion
+      grade: grade,
+      opinion: opinion,
+      student_id: studentId,
     };
 
     await onSubmit(formData);
@@ -42,18 +51,21 @@ function EvaluationForm({ evaluation, classes, subjects, onSubmit, onCancel }) {
       <div className="user-form__header">
         <span className="user-form__tag">{evaluation ? "EDIT" : "NEW"}</span>
         <h2 className="user-form__title">
-          {evaluation ? "Update User" : "Create User"}
+          {evaluation ? "Update Evaluation" : "Create Evaluation"}
         </h2>
       </div>
 
       <div className="user-form__grid">
         <div className="user-form__field">
           <label>Class</label>
-          <select value={classId} onChange={(e) => setClassId(e.target.value)}>
-            <option value="">Select a class</option>
-            {classes.map((classItem) => (
-              <option key={classItem.id} value={classItem.id}>
-                {classItem.name}
+          <select
+            value={studentId}
+            onChange={(e) => setStudentId(e.target.value)}
+          >
+            <option value="">Select a student</option>
+            {students.map((std) => (
+              <option key={std.id} value={std.id}>
+                {std.username}
               </option>
             ))}
           </select>
@@ -76,16 +88,28 @@ function EvaluationForm({ evaluation, classes, subjects, onSubmit, onCancel }) {
 
         <div className="user-form__field">
           <label>Opinion</label>
-         <input type="text" required onChange={(e)=>{
-            setOpinion(e.target.value);
-         }} />
+          <input
+          value={opinion}
+            type="text"
+            required
+            onChange={(e) => {
+              setOpinion(e.target.value);
+            }}
+          />
         </div>
 
-         <div className="user-form__field">
+        <div className="user-form__field">
           <label>Grade</label>
-         <input type="text" required onChange={(e)=>{
-            setGrade(e.target.value);
-         }} />
+          <input
+          value={grade}
+            type="number"
+            required
+            max={100}
+            min={0}
+            onChange={(e) => {
+              setGrade(Number(e.target.value));
+            }}
+          />
         </div>
       </div>
 
