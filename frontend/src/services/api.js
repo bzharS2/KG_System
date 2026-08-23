@@ -389,7 +389,6 @@ async function getTeacherClasses(token) {
   const data = await response.json();
   return data;
 }
-
 async function createEvaluation(token, values) {
   const response = await fetch("http://localhost:5000/teacher/evaluations", {
     method: "POST",

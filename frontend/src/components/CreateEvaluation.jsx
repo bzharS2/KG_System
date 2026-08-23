@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import "./UserForm.css";
