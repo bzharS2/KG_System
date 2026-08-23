@@ -1,14 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
 import {
-  Link,
-  BrowserRouter,
-  Routes,
-  Route,
+
   useNavigate,
 } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { use } from "react";
+import { useEffect,  useState } from "react";
 import {
   getSubjects,
   createSubjects,
@@ -35,6 +31,9 @@ function Subjects() {
   }
   async function createSubject(data) {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await createSubjects(token, data);
     if (result.error) {
       alert(result.error);
@@ -45,6 +44,9 @@ function Subjects() {
   async function updateSubject(data) {
     const id = data.id;
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await updateSubjects(token, data, id);
     if (result.error) {
       alert(result.error);
@@ -58,6 +60,9 @@ function Subjects() {
       return;
     }
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await deleteSubjects(token, id);
     if (result.error) {
       alert(result.error);
@@ -67,6 +72,10 @@ function Subjects() {
   }
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadSubjects();
   }, []);
   return (

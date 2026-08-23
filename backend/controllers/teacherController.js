@@ -366,6 +366,45 @@ const deleteStudentEvaluationsController = async (req, res) => {
         });
     }
 };
+const sortByNameController = async (req, res) => {
+    const { name } = req.query;
+
+    if (!name || name.trim() === "") {
+        return res.status(400).json({
+            error: "name is required"
+        });
+    }
+
+    try {
+        const [result] = await db.query(
+              `SELECT DISTINCT
+        student.id,
+        student.username,
+        student.email,
+        student.date_of_birth,
+        classes.name AS class
+     FROM users AS teacher
+     JOIN teaching_assignments AS assignment
+         ON assignment.teacher_id = teacher.id
+     JOIN users AS student
+         ON student.class_id = assignment.class_id
+     JOIN classes
+         ON classes.id = student.class_id
+     WHERE teacher.id = ?
+     AND LOWER(student.username) LIKE LOWER(?)
+       AND teacher.role = 'teacher'
+       AND student.role = 'student'`,
+            [req.user.id,`%${name.trim()}%`]
+        );
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
 
 module.exports = {
     getTeacherDashboardController,
@@ -375,5 +414,6 @@ module.exports = {
     updateStudentEvaluations,
     getTeacherClassesController,
     getTeacherSubjectsController,
-    deleteStudentEvaluationsController
+    deleteStudentEvaluationsController,
+    sortByNameController
 };

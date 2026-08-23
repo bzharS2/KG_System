@@ -455,7 +455,29 @@ async function getStudentSubjects(token) {
   return data;
 }
 async function getStudentEvaluation(token) {
-    const response = await fetch("http://localhost:5000/student/evaluations", {
+  const response = await fetch("http://localhost:5000/student/evaluations", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getUserByName(token, name) {
+  const response = await fetch(`http://localhost:5000/admin/user/search?name=${encodeURIComponent(name)}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  })
+  const data = await response.json();
+  return data;
+}
+async function getStudentByName(token, name) {
+  const response = await fetch(`http://localhost:5000/teacher/user/search?name=${encodeURIComponent(name)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -503,5 +525,7 @@ export {
   deleteEvaluations,
   getStudentDashboard,
   getStudentSubjects,
-  getStudentEvaluation
+  getStudentEvaluation,
+  getUserByName,
+  getStudentByName
 }

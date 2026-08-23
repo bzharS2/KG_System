@@ -9,8 +9,10 @@ const { getTeacherDashboardController,
     updateStudentEvaluations,
     getTeacherClassesController,
     getTeacherSubjectsController,
-    deleteStudentEvaluationsController
+    deleteStudentEvaluationsController,
+    sortByNameController
 } = require('../controllers/teacherController');
+router.get('/user/search',verification,checkRole("teacher"),sortByNameController);
 
 router.get('/dashboard', verification, checkRole('teacher'), getTeacherDashboardController);
 router.get('/students', verification, checkRole('teacher'), getStudentController);

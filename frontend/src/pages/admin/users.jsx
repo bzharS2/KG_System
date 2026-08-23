@@ -1,14 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
-import {
-  Link,
-  BrowserRouter,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { use } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import AdminNavbar from "../../components/AdminNavbar";
 import UserForm from "../../components/UserForm";
 import {
@@ -20,6 +13,7 @@ import {
   createTeacher,
   getUsers,
   getClasses,
+  getUserByName,
 } from "../../services/api";
 
 import "./Users.css";
@@ -30,10 +24,14 @@ function Users() {
   const [classes, setClasses] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [fromUpdate, setFromUpdate] = useState(false);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
+  const [search, setSearch] = useState("");
 
   async function loadUsers() {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await getUsers(token);
     setUsers(result);
   }
@@ -47,35 +45,67 @@ function Users() {
   }
   async function sortRole(role) {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await getUsersByRole(token, role);
     setUsers(result);
   }
   async function sortStatus(status) {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await getUsersByStatus(token, status);
+    setUsers(result);
+  }
+  async function searchByName(name) {
+    if (name.trim() === "") {
+      loadUsers();
+      return;
+    }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate(`/`);
+    }
+    const result = await getUserByName(token, name);
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
     setUsers(result);
   }
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     loadClasses();
     loadUsers();
   }, []);
 
   async function createUser(fromData) {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     if (fromData.role == "student") {
-      const result = await createStudent(token, fromData);
+      await createStudent(token, fromData);
     } else if (fromData.role == "teacher") {
       const result = await createTeacher(token, fromData);
       console.log(result);
     } else {
-      const result = await createStaff(token, fromData);
+    await createStaff(token, fromData);
     }
     loadUsers();
   }
   async function update(fromData) {
     const id = fromData.id;
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await updateUser(token, fromData, id);
     if (!result.message) {
       alert(`${result.error}`);
@@ -159,13 +189,22 @@ function Users() {
           <button
             className="users-filter-reset"
             onClick={() => {
+              setSearch("");
               loadUsers();
             }}
           >
             Reset
           </button>
         </div>
-
+        <input
+          type="text"
+          value={search}
+          placeholder="search by name..."
+          onChange={(e) => {
+            setSearch(e.target.value);
+            searchByName(e.target.value);
+          }}
+        />
         {showForm && (
           <UserForm
             user={null}
@@ -187,7 +226,7 @@ function Users() {
         )}
 
         <div className="users-list">
-          {users.length === 0 && <p className="users-empty">No users yet.</p>}
+          {users.length === 0 && <p className="users-empty">No users found.</p>}
           {users.map((user) => (
             <div key={user.id} className="user-card">
               <div className="user-card__main">

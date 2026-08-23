@@ -1,14 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
-import {
-  Link,
-  BrowserRouter,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { use } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   getAssignments,
   getClasses,
@@ -23,7 +16,7 @@ import AssignmentForm from "../../components/AssignmentForm";
 import "./Assignments.css";
 
 function Assignments() {
-    const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [assignments, setAssignments] = useState([]);
   const [teachers, setTeachers] = useState([]);
@@ -35,6 +28,10 @@ function Assignments() {
 
   async function createA(data) {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
+
     const result = await createAssignment(token, data);
     if (result.error) {
       alert(result.error);
@@ -43,10 +40,13 @@ function Assignments() {
   }
   async function updateA(data) {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const id = data.id;
     const result = await updateAssignment(token, data, id);
     if (result.error) {
-      alert(result.error)
+      alert(result.error);
     }
     loadAssignments();
   }
@@ -56,6 +56,9 @@ function Assignments() {
       return;
     }
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await deleteAssignment(token, id);
     if (result.error) {
       alert(result.error);
@@ -65,28 +68,41 @@ function Assignments() {
 
   async function loadClasses() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await getClasses(token);
     setClasses(result);
   }
   async function loadAssignments() {
     const token = localStorage.getItem("token");
     if (!token) {
-      return  navigate('/')
+      return navigate("/");
     }
     const result = await getAssignments(token);
     setAssignments(result);
   }
   async function loadSubjects() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await getSubjects(token);
     setSubjects(result);
   }
   async function loadTeachers() {
     const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     const result = await getTeachers(token);
     setTeachers(result);
   }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadAssignments();
     loadClasses();
     loadSubjects();

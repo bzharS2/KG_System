@@ -1,24 +1,44 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { getStudents } from "../../services/api";
+import { getStudents, getStudentByName } from "../../services/api";
 import "./Students.css";
 import TeacherNavbar from "../../components/TeacherNavbar";
 import { useNavigate } from "react-router-dom";
 
 function Students() {
   const [kids, setKids] = useState([]);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   async function loadStudents() {
     const token = localStorage.getItem("token");
     if (!token) {
-      return navigate('/')
+      return navigate("/");
     }
     const result = await getStudents(token);
     setKids(result);
   }
+  async function searchByName(name) {
+    if (name.trim() === "") {
+      loadStudents();
+      return;
+    }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate(`/`);
+    }
+    const result = await getStudentByName(token, name);
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
+    setKids(result);
+  }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadStudents();
   }, []);
   return (
@@ -28,7 +48,16 @@ function Students() {
       <div className="students-page__container">
         <p className="students-eyebrow">Teacher / Directory</p>
         <h1 className="students-title">Your Students</h1>
-
+        <input
+          type="text"
+          value={search}
+          placeholder="search by name..."
+          onChange={(e) => {
+            setSearch(e.target.value);
+            searchByName(e.target.value);
+          }}
+        />
+        
         <div className="students-list">
           {kids.length === 0 && (
             <p className="students-empty">No students yet.</p>

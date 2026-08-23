@@ -32,9 +32,11 @@ const { sortByRole,
     getEvaluationsController,
     getActiveStaffController,
     getActiveStudentsController,
-    getActiveTeachersController
+    getActiveTeachersController,
+    sortByNameController
 } = require('../controllers/adminController')
 
+router.get('/user/search',verification,checkRole("admin"),sortByNameController);
 
 router.post('/students', verification, checkRole('admin'), createStudentController);//checked
 router.post('/staff', verification, checkRole('admin'), createStaffController);//checked
@@ -70,7 +72,6 @@ router.get('/user/sort/status/inactive', verification, checkRole("admin"), sortB
 router.get('/user/sort/role/teacher', verification, checkRole("admin"), sortByTeacher);
 router.get('/user/sort/role/staff', verification, checkRole("admin"), sortByStaff);
 router.get('/user/sort/role/student', verification, checkRole("admin"), sortByStudent);
-
 //get evaluations
 router.get('/evaluations', verification, checkRole("admin"), getEvaluationsController);
 
@@ -96,4 +97,5 @@ router.get(
     getActiveStaffController
 );
 router.get('/teachers', verification, checkRole("admin"), getTeachersController)
+
 module.exports = router;

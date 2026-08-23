@@ -1,14 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import {
-  Link,
-  BrowserRouter,
-  Routes,
-  Route,
+
   useNavigate,
 } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { use } from "react";
+import { useEffect, useState } from "react";
 import {
   getClasses,
   createClass,
@@ -28,6 +23,9 @@ function Classes() {
 
   async function createC(fromData) {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await createClass(token, fromData);
     if (result.error) {
       alert(result.error);
@@ -38,6 +36,9 @@ function Classes() {
   async function updateC(fromData) {
     const id = fromData.id;
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await updateClass(token, fromData, id);
      if (result.error) {
       alert(result.error);
@@ -51,6 +52,9 @@ function Classes() {
       return;
     }
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await deleteClass(token, id);
     if (result.error) {
       alert(result.error);
@@ -68,6 +72,10 @@ function Classes() {
     setClasses(result);
   }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadClasses();
   }, []);
   return (

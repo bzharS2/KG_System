@@ -7,6 +7,10 @@ export default function StudentNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function logout() {
+    const ans = window.confirm(`are you sure you want to logout `);
+    if (!ans) {
+      return;
+    }
     localStorage.removeItem("token");
     navigate("/");
   }

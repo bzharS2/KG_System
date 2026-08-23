@@ -1,20 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { getStudentSubjects } from "../../services/api";
 import "./StudentSubject.css";
 import StudentNavbar from "../../components/StudentNavbar";
+import { useNavigate } from "react-router-dom";
 
 function StudentSubject() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   async function loadSubjects() {
     const token = localStorage.getItem("token");
+    if (!token ) {
+      return navigate('/')
+    }
     const result = await getStudentSubjects(token);
     console.log(result);
     setData(result);
   }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadSubjects();
   }, []);
   return (

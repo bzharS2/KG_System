@@ -7,6 +7,10 @@ export default function AdminNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function logout() {
+    const ans = window.confirm(`are you sure you want to logout `);
+    if (!ans) {
+      return;
+    }
     localStorage.removeItem("token");
     navigate("/");
   }
@@ -18,7 +22,7 @@ export default function AdminNavbar() {
 
   return (
     <nav className="admin-nav">
-      <div className="admin-nav__mark">ADMIN</div>
+      <div className="admin-nav__mark">TEACHER</div>
 
       <div className="admin-nav__links">
         {links.map(({ to, label }) => (

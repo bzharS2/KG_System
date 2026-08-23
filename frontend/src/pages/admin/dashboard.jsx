@@ -1,14 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
 import {
-  Link,
-  BrowserRouter,
-  Routes,
-  Route,
   useNavigate,
 } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { use } from "react";
+import { useEffect,useState } from "react";
 import {
   getAdminDashboard,
   getActiveStaff,
@@ -24,18 +19,27 @@ function AdminDashboard() {
   const [activeStudents, setActiveStudents] = useState(null);
   const [activeTeachers, setActiveTeachers] = useState(null);
   const [activeStaff, setActiveStaff] = useState(null);
-  async function loadStudent(params) {
+  async function loadStudent() {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await getActiveStudents(token);
     setActiveStudents(result);
   }
-  async function loadTeacher(params) {
+  async function loadTeacher() {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await getActiveTeacher(token);
     setActiveTeachers(result);
   }
-  async function loadStaff(params) {
+  async function loadStaff() {
     const token = localStorage.getItem("token");
+     if (!token) {
+      return navigate("/");
+    }
     const result = await getActiveStaff(token);
     setActiveStaff(result);
   }
@@ -49,6 +53,10 @@ function AdminDashboard() {
     setData(result);
   }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadDashboard();
     loadStaff();
     loadStudent();

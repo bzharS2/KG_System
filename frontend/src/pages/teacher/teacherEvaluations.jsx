@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
@@ -15,9 +16,8 @@ import TeacherNavbar from "../../components/TeacherNavbar";
 import CreateEvaluation from "../../components/CreateEvaluation";
 import { useNavigate } from "react-router-dom";
 
-
 function TeacherEvaluations() {
-    const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [evaluations, setEvaluations] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -28,10 +28,9 @@ function TeacherEvaluations() {
   const [single, setSingle] = useState(null);
 
   async function loadEvaluations() {
-    
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/')
+      navigate("/");
     }
 
     const result = await getTeacherEvaluations(token);
@@ -39,6 +38,9 @@ function TeacherEvaluations() {
   }
   async function loadSubjects() {
     const token = localStorage.getItem("token");
+      if (!token) {
+      return navigate("/");
+    }
     const result = await getTeacherSubjects(token);
     setSubjects(result);
   }
@@ -49,12 +51,18 @@ function TeacherEvaluations() {
   // }
   async function loadStudents() {
     const token = localStorage.getItem("token");
+      if (!token) {
+      return navigate("/");
+    }
     const result = await getStudents(token);
     setStudents(result);
   }
 
   async function create(data) {
     const token = localStorage.getItem("token");
+      if (!token) {
+      return navigate("/");
+    }
     const result = await createEvaluation(token, data);
     if (result.error) {
       return alert(result.error);
@@ -64,6 +72,9 @@ function TeacherEvaluations() {
   async function update(data) {
     const id = data.id;
     const token = localStorage.getItem("token");
+      if (!token) {
+      return navigate("/");
+    }
     const result = await updateEvaluations(token, data, id);
     if (result.error) {
       return alert(result.error);
@@ -79,6 +90,9 @@ function TeacherEvaluations() {
     }
     const id = data.id;
     const token = localStorage.getItem("token");
+      if (!token) {
+      return navigate("/");
+    }
     const result = await deleteEvaluations(token, id);
     if (result.error) {
       return alert(result.error);
@@ -86,6 +100,10 @@ function TeacherEvaluations() {
     loadEvaluations();
   }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadEvaluations();
     // loadClasses();
     loadSubjects();

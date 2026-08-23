@@ -511,20 +511,20 @@ const createTeacherController = async (req, res) => {
 };
 async function createUser(username, email, password, dateOfBirth, role) {
     if (
-    !username ||
-    !email ||
-    !password ||
-    !dateOfBirth ||
-    username.trim() === "" ||
-    email.trim() === "" ||
-    password.trim() === "" ||
-    dateOfBirth.trim() === ""
-) {
-    return {
-        check: false,
-        text: "Invalid inputs"
-    };
-}
+        !username ||
+        !email ||
+        !password ||
+        !dateOfBirth ||
+        username.trim() === "" ||
+        email.trim() === "" ||
+        password.trim() === "" ||
+        dateOfBirth.trim() === ""
+    ) {
+        return {
+            check: false,
+            text: "Invalid inputs"
+        };
+    }
     try {
         const [result] = await db.query('SELECT * FROM users WHERE email=?', [email.trim().toLowerCase()])
         if (result.length > 0) {
@@ -629,6 +629,35 @@ async function sortUsers(column, value) {
         return false;
     }
 }
+const sortByNameController = async (req, res) => {
+    const { name } = req.query;
+
+    if (!name || name.trim() === "") {
+        return res.status(400).json({
+            error: "name is required"
+        });
+    }
+
+    try {
+        const [result] = await db.query(
+            `SELECT id, username, email, role, date_of_birth, status
+             FROM users
+             WHERE LOWER(username) LIKE LOWER(?)
+             ORDER BY username ASC`,
+            [`%${name.trim()}%`]
+        );
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            error: "internal server error"
+        });
+    }
+};
+
 const getTeachersController = async (req, res) => {
     try {
         const [result] = await db.query(`SELECT * FROM users WHERE role='teacher' AND status='active'`);
@@ -724,5 +753,6 @@ module.exports = {
     getEvaluationsController,
     getActiveStaffController,
     getActiveStudentsController,
-    getActiveTeachersController
+    getActiveTeachersController,
+    sortByNameController
 };

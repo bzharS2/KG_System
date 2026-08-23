@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { getTeacherDashboard } from "../../services/api";
 import "./TeacherDashboard.css";
@@ -17,10 +16,13 @@ function TeacherDashboard() {
       return navigate("/");
     }
     const result = await getTeacherDashboard(token);
-    console.log(result);
     setData(result);
   }
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return navigate("/");
+    }
     loadDashboard();
   }, []);
   return (
